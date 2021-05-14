@@ -16,9 +16,8 @@ def apply():
     ctx["backup"]["stdout"] = sys.stdout
     sys.stdout = buf
     # Function Override
-    org = {}
     for funcname in config.blocks["builtinFuncs"]:
-        org[funcname] = builtins[funcname]
+        ctx["backup"][funcname] = builtins[funcname]
         if config.blocks["builtinFuncs"][funcname]:
             builtins[funcname] = locals()[
                 config.blocks["builtinFuncs"][funcname]
