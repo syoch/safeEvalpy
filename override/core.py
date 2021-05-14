@@ -1,5 +1,7 @@
 import builtins
 from . import config
+import sys
+import io
 
 
 def apply():
