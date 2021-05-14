@@ -1,6 +1,7 @@
 import builtins
 from . import config
 from . import block
+import importlib
 import sys
 import io
 ctx = {
@@ -19,11 +20,10 @@ def apply():
     # Function Override
     for funcname in config.blocks["builtinFuncs"]:
         ctx["backup"][funcname] = builtins[funcname]
-        if config.blocks["builtinFuncs"][funcname]:
-            builtins[funcname] = locals()[
-                config.blocks["builtinFuncs"][funcname]
-            ]
-        else:
+        mode = config.blocks["builtinFuncs"][funcname]
+        if mode == "override":
+            builtins[funcname] = importlib.import_module(funcname, ".").func
+        elif mode == "block":
             builtins[funcname] = block.block(funcname+"()")
 
 
