@@ -1,5 +1,6 @@
 import builtins
 from . import config
+from . import block
 import sys
 import io
 ctx = {
@@ -23,4 +24,4 @@ def apply():
                 config.blocks["builtinFuncs"][funcname]
             ]
         else:
-            builtins[funcname] = block(funcname+"()")
+            builtins[funcname] = block.block(funcname+"()")
