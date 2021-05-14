@@ -25,3 +25,11 @@ def apply():
             ]
         else:
             builtins[funcname] = block.block(funcname+"()")
+
+
+def restore():
+    # restore functions
+    for funcname in config.blocks["builtinFuncs"]:
+        builtins[funcname] = ctx["backup"][funcname]
+    # restore stdout
+    sys.stdout = ctx["backup"]["stdout"]

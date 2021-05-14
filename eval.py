@@ -20,10 +20,4 @@ def _eval(src):
     except Exception as ex:
         error = str(ex)
 
-    # restore functions
-    for funcname in config.blocks["builtinFuncs"]:
-        __builtins__[funcname] = org[funcname]
-    # restore stdout
-    sys.stdout = bak_stdout
-    # get value
     stdout = buf.getvalue()
