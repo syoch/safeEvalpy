@@ -3,7 +3,7 @@ from . import config
 from . import block
 
 
-def myImport(name, _globals=None, _locals=None, fromlist=(), level=0):
+def func(name, _globals=None, _locals=None, fromlist=(), level=0):
     basename = name.split(".")[0]
     if basename in config.blocks["module"]:
         raise Exception(f"Module {basename} is blocked.")
