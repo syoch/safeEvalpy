@@ -9,17 +9,17 @@ blocks = {
     ],
     "file": ["main.py", "token", ],
     "builtinFuncs": {
-        "__import__": "myImport",
-        "range": "myRange",
-        "open": "myOpen",
-        "print": "myPrint",
-        "iter": "myIter",
-        "globals": None,
-        "locals": None,
-        "input": None,
-        "exit": None,
-        "exec": None,
-        "quit": None
+        "__import__": "override",
+        "range": "override",
+        "open": "override",
+        "print": "override",
+        "iter": "override",
+        "globals": "block",
+        "locals": "block",
+        "input": "block",
+        "exit": "block",
+        "exec": "block",
+        "quit": "block"
     },
     "funcs": {
         "sys": ["exit"],
