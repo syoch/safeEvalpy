@@ -1,3 +1,6 @@
+import pathlib
+
+
 def myRange(a=0, b=0, c=1):
     start = 0
     end = 0
@@ -50,7 +53,5 @@ def myPrint(*objects, sep=' ', end='\n', file=buf, flush=False):
 def myIter(objects, sentinel=None):
     if type(objects) == type(lambda: 0):
         if objects() != sentinel:
-
-
-raise Exception("iter attack has detected!")
-return iter(objects, sentinel=sentinel)
+            raise Exception("iter attack has detected!")
+    return iter(objects, sentinel=sentinel)
