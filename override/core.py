@@ -2,6 +2,12 @@ import builtins
 from . import config
 import sys
 import io
+ctx = {
+    "stdout": io.StringIO,
+    "backup": {
+        "stdout": sys.stdout
+    }
+}
 
 
 def apply():
