@@ -13,7 +13,7 @@ ctx = {
 def apply():
     # stream override
     buf = io.StringIO()
-    bak_stdout = sys.stdout
+    ctx["backup"]["stdout"] = sys.stdout
     sys.stdout = buf
     # Function Override
     org = {}
