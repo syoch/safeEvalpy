@@ -1,3 +1,6 @@
+from .core import ctx
+
+
 def myIter(objects, sentinel=None):
     if type(objects) == type(lambda: 0):
         if objects() != sentinel:
