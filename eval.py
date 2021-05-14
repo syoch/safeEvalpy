@@ -1,5 +1,6 @@
 import io
 import sys
+from . import config
 
 
 def _eval(src):
@@ -7,11 +8,11 @@ def _eval(src):
     bak_stdout = sys.stdout
     sys.stdout = buf
     org = {}
-    for funcname in utilConf["builtinFuncs"]:
+    for funcname in config.blocks["builtinFuncs"]:
         org[funcname] = __builtins__[funcname]
-        if utilConf["builtinFuncs"][funcname]:
+        if config.blocks["builtinFuncs"][funcname]:
             __builtins__[funcname] = locals(
-            )[utilConf["builtinFuncs"][funcname]]
+            )[config.blocks["builtinFuncs"][funcname]]
         else:
             __builtins__[funcname] = block(funcname+"()")
     try:
@@ -27,7 +28,7 @@ def _eval(src):
         )
     except Exception as ex:
         error = str(ex)
-    for funcname in utilConf["builtinFuncs"]:
+    for funcname in config.blocks["builtinFuncs"]:
         __builtins__[funcname] = org[funcname]
     sys.stdout = bak_stdout
     stdout = buf.getvalue()
