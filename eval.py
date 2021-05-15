@@ -1,4 +1,3 @@
-import builtins
 from .override.core import apply, restore, ctx
 from .filter.listcomp import check as check_listcomp
 
