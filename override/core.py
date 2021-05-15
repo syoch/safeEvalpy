@@ -1,9 +1,7 @@
 import builtins
-import os
 from . import config
 from . import block
 import importlib
-import pathlib
 import sys
 import io
 ctx = {
