@@ -1,7 +1,5 @@
-import io
-import sys
 from . import config
-import builtins as __builtins__
+import builtins
 from .override.core import apply, restore
 
 
@@ -13,7 +11,7 @@ def _eval(src):
         ret = eval(
             src,
             {
-                "__builtins__": __builtins__
+                "__builtins__": builtins
             },
             {
                 "buf": buf,
