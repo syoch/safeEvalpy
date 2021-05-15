@@ -1,4 +1,5 @@
 from .core import ctx
+from .config import blockedModules, blockedFunctions
 from . import block
 
 
