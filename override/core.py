@@ -25,14 +25,14 @@ def apply():
         mode = config.blocks["builtinFuncs"][funcname]
         if mode == "override":
             modname = __name__.replace(".core", "."+funcname)
-            builtins[funcname] = importlib.import_module(modname).func
+            setattr(builtins, funcname, importlib.import_module(modname).func)
         elif mode == "block":
-            builtins[funcname] = block.block(funcname+"()")
+            setattr(builtins, funcname, block.block(funcname+"()"))
 
 
 def restore():
     # restore functions
     for funcname in config.blocks["builtinFuncs"]:
-        builtins[funcname] = ctx["backup"][funcname]
+        setattr(builtins, funcname, ctx["backup"][funcname])
     # restore stdout
     sys.stdout = ctx["backup"]["stdout"]
