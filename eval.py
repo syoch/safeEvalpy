@@ -7,15 +7,7 @@ def _eval(src):
     # EXECUTING!!!
     try:
         # check (ListComp attack)
-        ret = eval(
-            src,
-            {
-                "__builtins__": builtins
-            },
-            {
-                "buf": ctx["stdout"],
-            }
-        )
+        ret = eval(src)
     except Exception as ex:
         error = str(ex)
 
