@@ -11,7 +11,7 @@ def _eval(src):
         # EXECUTING!!!
         ret = eval(src)
     except Exception as ex:
-        ret = "Exception:  "+str(type(ex))+str(ex)
+        ret = "Error:  "+type(ex).__name__+": "+str(ex)
 
     stdout = ctx["stdout"].getvalue()
     restore()
