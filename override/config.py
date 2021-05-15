@@ -14,3 +14,20 @@ blocks = {
         "quit": "block"
     }
 }
+blockedFunctions = {
+    "sys": ["exit"],
+    "os": ["system", "fork", "_exit", "popen", "abort", "chdir", "fchdir", "getcwd", "open", "fdopen", ],
+    "_thread": ["exit", "exit_thread"],
+    "time": ["sleep"],
+    "io": ["open", "open_code", "FileIO"],
+    "_io": ["open", "open_code", "FileIO"],
+    "tokenize": ["open", "_builtin_open"]
+}
+blockedModules = [
+    "subprocess",
+    "ctypes",
+    "pip",
+    "importlib", "imp",
+    "socket", "urllib", "http",
+    "fileinput", "pathlib"
+]
