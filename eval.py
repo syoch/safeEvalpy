@@ -1,6 +1,6 @@
 from . import config
 import builtins
-from .override.core import apply, restore
+from .override.core import apply, restore, ctx
 
 
 def _eval(src):
@@ -14,11 +14,11 @@ def _eval(src):
                 "__builtins__": builtins
             },
             {
-                "buf": buf,
+                "buf": ctx["stdout"],
             }
         )
     except Exception as ex:
         error = str(ex)
 
-    stdout = buf.getvalue()
+    stdout = ctx["stdout"].getvalue()
     restore()
