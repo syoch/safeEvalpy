@@ -12,7 +12,7 @@ ctx = {
 }
 
 
-def apply():
+def apply() -> None:
     # stream override
     buf = io.StringIO()
     ctx["stdout"] = buf
@@ -37,7 +37,7 @@ def apply():
             setattr(builtins, funcname, block.block(funcname+"()"))
 
 
-def restore():
+def restore() -> None:
     # restore functions
     for funcname in config.blocks["builtinFuncs"]:
         setattr(builtins, funcname, ctx["backup"][funcname])
