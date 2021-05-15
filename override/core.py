@@ -1,7 +1,9 @@
 import builtins
+import os
 from . import config
 from . import block
 import importlib
+import pathlib
 import sys
 import io
 ctx = {
@@ -16,13 +18,14 @@ def apply():
     # stream override
     buf = io.StringIO()
     ctx["backup"]["stdout"] = sys.stdout
-    sys.stdout = buf
+    # sys.stdout = buf
     # Function Override
     for funcname in config.blocks["builtinFuncs"]:
         ctx["backup"][funcname] = getattr(builtins, funcname)
         mode = config.blocks["builtinFuncs"][funcname]
         if mode == "override":
-            builtins[funcname] = importlib.import_module(funcname, ".").func
+            modname = __name__.replace(".core", "."+funcname)
+            builtins[funcname] = importlib.import_module(modname).func
         elif mode == "block":
             builtins[funcname] = block.block(funcname+"()")
 
