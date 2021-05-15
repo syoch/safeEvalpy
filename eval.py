@@ -1,4 +1,3 @@
-from . import config
 import builtins
 from .override.core import apply, restore, ctx
 
