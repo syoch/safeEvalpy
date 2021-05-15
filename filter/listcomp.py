@@ -1,7 +1,7 @@
 import ast
 
 
-def check(src):
+def check(src: str):
     for node in ast.walk(ast.parse(src)):
         if type(node) != ast.ListComp:
             continue
