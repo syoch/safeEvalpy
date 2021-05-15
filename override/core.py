@@ -19,13 +19,22 @@ def apply():
     buf = io.StringIO()
     ctx["backup"]["stdout"] = sys.stdout
     # sys.stdout = buf
+    # Load all override functions
+    overrides = {}
+    for funcname in config.blocks["builtinFuncs"]:
+        mode = config.blocks["builtinFuncs"][funcname]
+        if mode == "override":
+            modname = __name__.replace(".core", "."+funcname)
+            print(modname)
+            overrides[funcname] = importlib.import_module(modname).func
+
     # Function Override
     for funcname in config.blocks["builtinFuncs"]:
         ctx["backup"][funcname] = getattr(builtins, funcname)
         mode = config.blocks["builtinFuncs"][funcname]
         if mode == "override":
             modname = __name__.replace(".core", "."+funcname)
-            setattr(builtins, funcname, importlib.import_module(modname).func)
+            setattr(builtins, funcname, overrides[funcname])
         elif mode == "block":
             setattr(builtins, funcname, block.block(funcname+"()"))
 
