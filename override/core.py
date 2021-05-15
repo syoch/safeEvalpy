@@ -17,8 +17,9 @@ ctx = {
 def apply():
     # stream override
     buf = io.StringIO()
+    ctx["stdout"] = buf
     ctx["backup"]["stdout"] = sys.stdout
-    # sys.stdout = buf
+    sys.stdout = buf
     # Load all override functions
     overrides = {}
     for funcname in config.blocks["builtinFuncs"]:
