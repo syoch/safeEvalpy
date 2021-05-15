@@ -4,12 +4,11 @@ from .filter.listcomp import check as check_listcomp
 
 
 def _eval(src):
-    # check ListComp Attack!
-    check_listcomp(src)
     apply()
-    # EXECUTING!!!
     try:
-        # check (ListComp attack)
+        # check ListComp Attack!
+        check_listcomp(src)
+        # EXECUTING!!!
         ret = eval(src)
     except Exception as ex:
         error = str(ex)
