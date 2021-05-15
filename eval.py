@@ -15,3 +15,5 @@ def _eval(src):
 
     stdout = ctx["stdout"].getvalue()
     restore()
+
+    return ret, stdout
