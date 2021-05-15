@@ -19,7 +19,7 @@ def apply():
     sys.stdout = buf
     # Function Override
     for funcname in config.blocks["builtinFuncs"]:
-        ctx["backup"][funcname] = builtins[funcname]
+        ctx["backup"][funcname] = getattr(builtins, funcname)
         mode = config.blocks["builtinFuncs"][funcname]
         if mode == "override":
             builtins[funcname] = importlib.import_module(funcname, ".").func
