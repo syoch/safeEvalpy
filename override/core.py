@@ -25,7 +25,6 @@ def apply():
         mode = config.blocks["builtinFuncs"][funcname]
         if mode == "override":
             modname = __name__.replace(".core", "."+funcname)
-            print(modname)
             overrides[funcname] = importlib.import_module(modname).func
 
     # Function Override
