@@ -2,9 +2,11 @@ import io
 import sys
 from . import config
 import builtins as __builtins__
+from .override.core import apply, restore
 
 
 def _eval(src):
+    apply()
     # EXECUTING!!!
     try:
         # check (ListComp attack)
@@ -21,3 +23,4 @@ def _eval(src):
         error = str(ex)
 
     stdout = buf.getvalue()
+    restore()
