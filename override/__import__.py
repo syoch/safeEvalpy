@@ -1,5 +1,4 @@
 from .core import ctx
-from . import config
 from . import block
 
 blockedFunctions = {
