@@ -1,8 +1,10 @@
 from typing import Any, Tuple
 from .override.core import apply, restore, ctx
 from .filter.listcomp import check as check_listcomp
+import timeout_decorator
 
 
+@timeout_decorator.timeout(5)
 def _eval(src: str, *args, **kwargs) -> Tuple[Any, str]:
     apply()
     try:
