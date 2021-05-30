@@ -17,4 +17,7 @@ def func(name, _globals=None, _locals=None, fromlist=(), level=0):
                 obj, funcnames,
                 block.block(basename+"."+funcnames+"()")
             )
+    if basename.replace("_", "") == "io":
+        obj.open = open
+        obj.open_code = open
     return obj
