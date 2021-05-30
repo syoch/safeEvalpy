@@ -13,6 +13,8 @@ def func(name, _globals=None, _locals=None, fromlist=(), level=0):
 
     if basename in blockedFunctions:
         for funcnames in blockedFunctions[basename]:
-            setattr(obj, funcnames, block.block(
-                basename+"."+funcnames+"()"))
+            setattr(
+                obj, funcnames,
+                block.block(basename+"."+funcnames+"()")
+            )
     return obj
