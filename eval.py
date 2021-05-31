@@ -2,6 +2,7 @@ from typing import Any, Tuple
 from .override.core import apply, restore, ctx
 from .filter.listcomp import check as check_listcomp
 import timeout_decorator
+import traceback
 
 
 @timeout_decorator.timeout(5)
@@ -12,10 +13,11 @@ def _eval(src: str, *args, **kwargs) -> Tuple[Any, str]:
         check_listcomp(src)
         # EXECUTING!!!
         ret = eval(src, *args, **kwargs)
+        restore()
     except Exception as ex:
-        ret = "Error:  "+type(ex).__name__+": "+str(ex)
+        restore()
+        ret = ''.join(traceback.TracebackException.from_exception(ex).format())
 
     stdout = ctx["stdout"].getvalue()
-    restore()
 
     return ret, stdout
