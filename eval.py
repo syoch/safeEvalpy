@@ -6,13 +6,13 @@ import traceback
 
 
 @timeout_decorator.timeout(5)
-def _eval(src: str) -> Tuple[Any, str]:
+def _eval(src: str, *args, **kwargs) -> Tuple[Any, str]:
     apply()
     try:
         # check ListComp Attack!
         check_listcomp(src)
         # EXECUTING!!!
-        ret = eval(src)
+        ret = eval(src, *args, **kwargs)
         restore()
     except Exception as ex:
         restore()
