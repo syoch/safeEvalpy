@@ -25,7 +25,7 @@ blockedFunctions = {
 }
 blockedModules = [
     "subprocess",
-    "ctypes",
+    "ctypes", "signal",
     "pip",
     "importlib", "imp",
     "socket", "urllib", "http",
