@@ -16,35 +16,12 @@ ctx = {
 }
 
 
-def override(func):
-    def wrapped(*args):
-        restore()
-        func(*args)
-        apply()
-
-    realname = func.__name__
-    if realname[0:8] == "__wrap__":
-        realname = realname[8:]
-
-    ctx["overrides"][realname] = wrapped
-
-    return wrapped
-
-
 def apply() -> None:
     # stream override
     buf = io.StringIO()
     ctx["stdout"] = buf
     ctx["backup"]["stdout"] = sys.stdout
     sys.stdout = buf
-
-    # Load all override functions
-    overrides = {}
-    for funcname in config.blocks["builtinFuncs"]:
-        mode = config.blocks["builtinFuncs"][funcname]
-        if mode == "override":
-            modname = __name__.replace(".core", "."+funcname)
-            overrides[funcname] = importlib.import_module(modname).func
 
     # Function Override
     for funcname in config.blocks["builtinFuncs"]:

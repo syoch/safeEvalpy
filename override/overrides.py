@@ -1,10 +1,25 @@
 import pathlib
 from .core import ctx
 import builtins
-from .core import ctx, override
+import .core
 from .config import blockedModules, blockedFunctions
 from . import block
 from . import config
+
+
+def override(func):
+    def wrapped(*args):
+        core.restore()
+        func(*args)
+        core.apply()
+
+    realname = func.__name__
+    if realname[0:8] == "__wrap__":
+        realname = realname[8:]
+
+    ctx["overrides"][realname] = wrapped
+
+    return wrapped
 
 
 @override
