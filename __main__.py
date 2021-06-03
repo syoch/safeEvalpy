@@ -1,3 +1,6 @@
 from . import eval
 
-print(eval._eval("__import__(\"ctypes\")"))
+out, ret = eval._eval("__import__(\"ctypes\")")
+
+print(ret)
+print(out)
