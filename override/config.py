@@ -1,18 +1,18 @@
 blocks = {
     "file": ["main.py", "token", ],
-    "builtinFuncs": {
-        "__import__": "override",
-        "range": "override",
-        "open": "override",
-        "print": "override",
-        "iter": "override",
-        "globals": "block",
-        "locals": "block",
-        "input": "block",
-        "exit": "block",
-        "exec": "block",
-        "quit": "block"
-    }
+    "builtinFuncs": [
+        "__import__",
+        "range",
+        "open",
+        "print",
+        "iter",
+        "globals",
+        "locals",
+        "input",
+        "exit",
+        "exec",
+        "quit",
+    ]
 }
 blockedFunctions = {
     "sys": ["exit"],
@@ -24,7 +24,7 @@ blockedFunctions = {
     "tokenize": ["open", "_builtin_open"]
 }
 blockedModules = [
-    "subprocess", "pty", 
+    "subprocess", "pty",
     "ctypes", "signal",
     "pip",
     "importlib", "imp",

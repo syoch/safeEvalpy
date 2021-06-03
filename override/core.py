@@ -32,12 +32,12 @@ def apply() -> None:
     # Function Override
     for funcname in config.blocks["builtinFuncs"]:
         ctx["backup"][funcname] = getattr(builtins, funcname)
-        mode = config.blocks["builtinFuncs"][funcname]
-        if mode == "override":
-            modname = __name__.replace(".core", "."+funcname)
-            setattr(builtins, funcname, ctx["overrides"][modname])
-        elif mode == "block":
-            setattr(builtins, funcname, block.block(funcname+"()"))
+        setattr(
+            builtins,
+            funcname,
+            ctx["overrides"][funcname] if funcname in ctx["overrides"]
+            else block.block(funcname+"()")
+        )
 
 
 def restore() -> None:
