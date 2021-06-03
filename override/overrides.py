@@ -78,11 +78,12 @@ def __wrap__range(a=0, b=0, c=1):
 
 
 @override
-def __wrap__open(path, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True, opener=None):
+def __wrap__open(path, mode='r', *args):
     if "w" in mode:
         raise Exception("can't open file in write mode")
 
     basename = pathlib.Path(path).name
     if basename in config.blocks["file"]:
         raise Exception("can't open "+basename+".")
-    return open(path, mode, buffering, encoding, errors, newline, closefd, opener)
+
+    return open(path, mode, *args)
