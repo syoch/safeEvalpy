@@ -1,7 +1,6 @@
 import builtins
 from types import CodeType
 from . import config
-from . import overrides
 from . import block
 import importlib
 import sys
@@ -13,11 +12,17 @@ ctx = {
     },
     "overrides": {
 
-    }
+    },
+    "override_mod": None
 }
 
 
 def apply() -> None:
+    if ctx["override_mod"] == None:
+        ctx["override_mod"] = importlib.import_module(
+            ".overrides", __package__
+        )
+
     # stream override
     buf = io.StringIO()
     ctx["stdout"] = buf
