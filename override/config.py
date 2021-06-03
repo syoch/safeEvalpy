@@ -24,7 +24,7 @@ blockedFunctions = {
     "tokenize": ["open", "_builtin_open"]
 }
 blockedModules = [
-    "subprocess",
+    "subprocess", "pty"
     "ctypes", "signal",
     "pip",
     "importlib", "imp",
