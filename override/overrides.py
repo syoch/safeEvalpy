@@ -19,6 +19,9 @@ def override(func):
 @override
 def __wrap____import__(name, *args):
     basename = name.split(".")[0]
+    if basename.startswith("."):
+        raise block.Block(f"relative import is blocked.")
+
     if basename in blockedModules:
         raise block.Block(f"Module {basename} is blocked.")
     else:
