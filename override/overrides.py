@@ -57,7 +57,7 @@ def __wrap__iter(objects, sentinel=None):
 @override
 def __wrap__print(*objects, sep=' ', end='\n', file=None, flush=False):
     print(*objects, sep=sep, end=end,
-          file=ctx["stdout"], flush=False)
+          file=file, flush=False)
 
 
 @override
