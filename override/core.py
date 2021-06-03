@@ -9,6 +9,9 @@ ctx = {
     "stdout": io.StringIO,
     "backup": {
         "stdout": sys.stdout
+    },
+    "overrides":{
+
     }
 }
 
@@ -17,7 +20,9 @@ def override(func:function):
         restore()
         func()
         apply()
-        
+    
+    ctx["overrides"][func.__name__]=wrapped
+
     return wrapped
 
 def apply() -> None:
