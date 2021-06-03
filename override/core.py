@@ -10,20 +10,22 @@ ctx = {
     "backup": {
         "stdout": sys.stdout
     },
-    "overrides":{
+    "overrides": {
 
     }
 }
 
-def override(func:function):
-    def wrapped():
+
+def override(func: function):
+    def wrapped(*args):
         restore()
-        func()
+        func(*args)
         apply()
-    
-    ctx["overrides"][func.__name__]=wrapped
+
+    ctx["overrides"][func.__name__] = wrapped
 
     return wrapped
+
 
 def apply() -> None:
     # stream override
@@ -31,6 +33,7 @@ def apply() -> None:
     ctx["stdout"] = buf
     ctx["backup"]["stdout"] = sys.stdout
     sys.stdout = buf
+
     # Load all override functions
     overrides = {}
     for funcname in config.blocks["builtinFuncs"]:
