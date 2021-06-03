@@ -29,7 +29,7 @@ def apply() -> None:
         mode = config.blocks["builtinFuncs"][funcname]
         if mode == "override":
             modname = __name__.replace(".core", "."+funcname)
-            setattr(builtins, funcname, overrides[funcname])
+            setattr(builtins, funcname, ctx["overrides"][modname])
         elif mode == "block":
             setattr(builtins, funcname, block.block(funcname+"()"))
 
