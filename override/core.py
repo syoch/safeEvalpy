@@ -1,4 +1,5 @@
 import builtins
+from types import CodeType
 from . import config
 from . import block
 import importlib
@@ -11,6 +12,13 @@ ctx = {
     }
 }
 
+def override(func:function):
+    def wrapped():
+        restore()
+        func()
+        apply()
+        
+    return wrapped
 
 def apply() -> None:
     # stream override
