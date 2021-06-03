@@ -22,7 +22,11 @@ def override(func: function):
         func(*args)
         apply()
 
-    ctx["overrides"][func.__name__] = wrapped
+    realname = func.__name__
+    if realname[0:8] == "__wrap__":
+        realname = realname[8:]
+
+    ctx["overrides"][realname] = wrapped
 
     return wrapped
 
