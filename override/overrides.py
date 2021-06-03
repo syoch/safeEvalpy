@@ -8,12 +8,12 @@ from . import config
 
 
 @override
-def __wrap____import__(name, _globals=None, _locals=None, fromlist=(), level=0):
+def __wrap____import__(name, *args):
     basename = name.split(".")[0]
     if basename in blockedModules:
         raise block.Block(f"Module {basename} is blocked.")
     else:
-        obj = __import__(name, _globals, _locals, fromlist, level)
+        obj = __import__(name, *args)
 
     if basename in blockedFunctions:
         for funcnames in blockedFunctions[basename]:
