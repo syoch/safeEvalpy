@@ -1,21 +1,19 @@
 import pathlib
 from .core import ctx
 import builtins
-from .core import ctx, restore, apply
+from .core import ctx, override
 from .config import blockedModules, blockedFunctions
 from . import block
 from . import config
 
 
-def func(name, _globals=None, _locals=None, fromlist=(), level=0):
+@override
+def __wrap____import__(name, _globals=None, _locals=None, fromlist=(), level=0):
     basename = name.split(".")[0]
     if basename in blockedModules:
         raise block.Block(f"Module {basename} is blocked.")
     else:
-        restore()
-        obj = ctx["backup"]["__import__"](
-            name, _globals, _locals, fromlist, level)
-        apply()
+        obj = __import__(name, _globals, _locals, fromlist, level)
 
     if basename in blockedFunctions:
         for funcnames in blockedFunctions[basename]:
@@ -34,19 +32,22 @@ def func(name, _globals=None, _locals=None, fromlist=(), level=0):
     return obj
 
 
-def func(objects, sentinel=None):
+@override
+def __wrap__iter(objects, sentinel=None):
     if type(objects) == type(lambda: 0):
         if objects() != sentinel:
             raise Exception("iter attack has detected!")
-    return ctx["backup"]["iter"](objects, sentinel=sentinel)
+    return iter(objects, sentinel=sentinel)
 
 
-def func(*objects, sep=' ', end='\n', file=None, flush=False):
-    ctx["backup"]["print"](*objects, sep=sep, end=end,
-                           file=ctx["stdout"], flush=False)
+@override
+def __wrap__print(*objects, sep=' ', end='\n', file=None, flush=False):
+    print(*objects, sep=sep, end=end,
+          file=ctx["stdout"], flush=False)
 
 
-def func(a=0, b=0, c=1):
+@override
+def __wrap__range(a=0, b=0, c=1):
     start = 0
     end = 0
     step = c
@@ -58,15 +59,16 @@ def func(a=0, b=0, c=1):
         end = b
     if end > 10**10:
         end = 100
-    ret = ctx["backup"]["range"](start, end, step)
+    ret = range(start, end, step)
     return ret
 
 
-def func(path, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True, opener=None):
+@override
+def __wrap__open(path, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True, opener=None):
     if "w" in mode:
         raise Exception("can't open file in write mode")
 
     basename = pathlib.Path(path).name
     if basename in config.blocks["file"]:
         raise Exception("can't open "+basename+".")
-    return ctx["backup"]["open"](path, mode, buffering, encoding, errors, newline, closefd, opener)
+    return open(path, mode, buffering, encoding, errors, newline, closefd, opener)
