@@ -6,13 +6,21 @@ import traceback
 
 
 @timeout_decorator.timeout(5)
-def _eval(src: str, *args, **kwargs) -> Tuple[Any, str]:
+def _eval(
+    src: str, __globals=None, __locals=None
+) -> Tuple[Any, str]:
+
+    if not __globals:
+        __globals = globals()
+    if not __locals:
+        __locals = locals()
+
     apply()
     try:
         # check ListComp Attack!
         check_listcomp(src)
         # EXECUTING!!!
-        ret = eval(src, *args, **kwargs)
+        ret = eval(src, __globals, __locals)
         restore()
     except Exception as ex:
         restore()
