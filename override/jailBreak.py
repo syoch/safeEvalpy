@@ -6,7 +6,8 @@ def jailbreak(func):
 
     def wrapped(*args):
         core.restore()
-        func(*args)
+        ret = func(*args)
         core.apply()
+        return ret
 
     return wrapped
