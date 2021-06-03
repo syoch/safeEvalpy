@@ -1,7 +1,6 @@
 import pathlib
-from .core import ctx
+from .core import ctx, restore, apply
 import builtins
-import .core
 from .config import blockedModules, blockedFunctions
 from . import block
 from . import config
@@ -9,9 +8,9 @@ from . import config
 
 def override(func):
     def wrapped(*args):
-        core.restore()
+        restore()
         func(*args)
-        core.apply()
+        apply()
 
     realname = func.__name__
     if realname[0:8] == "__wrap__":
