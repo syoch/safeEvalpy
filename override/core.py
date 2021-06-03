@@ -16,7 +16,7 @@ ctx = {
 }
 
 
-def override(func: function):
+def override(func):
     def wrapped(*args):
         restore()
         func(*args)
