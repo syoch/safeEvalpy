@@ -24,19 +24,3 @@ extern "C" int open64(const char *pathname, int flags, unsigned int mode)
   }
   return org(pathname, flags, mode);
 }
-extern "C" int fork()
-{
-  auto org = (int (*)())(dlsym(RTLD_NEXT, "fork"));
-
-  if (fork_enabled)
-  {
-    return org();
-  }
-  else
-  {
-    auto fp = fopen("safeEvalPy.log", "a+");
-    fprintf(fp, "syscall::fork() is blocked\n");
-    fclose(fp);
-    return 0;
-  }
-}
