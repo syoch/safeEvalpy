@@ -18,7 +18,7 @@ blockedFunctions = {
     "sys": ["exit"],
     "os": [
         "system",
-        "fork", "forkpty", "register_at_fork",
+        "fork", "forkpty",
         "_exit", "kill", "killpg", "abort",
         "popen",
         "chdir", "fchdir",
