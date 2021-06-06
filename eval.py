@@ -17,6 +17,7 @@ def _eval(
     if not __locals:
         __locals = locals()
 
+    del __locals["core"]
     core.apply()
     try:
         # check ListComp Attack!
