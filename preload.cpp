@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <dlfcn.h>
 #include <string.h>
+#include <unistd.h>
 
 // global variables
 bool fork_enabled = true;
@@ -36,6 +37,23 @@ extern "C" int fork()
   {
     auto fp = fopen("safeEvalPy.log", "a+");
     fprintf(fp, "syscall::fork() is blocked\n");
+    fclose(fp);
+    return 0;
+  }
+}
+extern "C" pid_t forkpty(int *amaster, char *name,
+                         const struct termios *termp,
+                         const struct winsize *winp)
+{
+  if (fork_enabled)
+  {
+    auto org = (pid_t(*)(int *, char *, const struct termios *, const struct winsize *))(dlsym((void *)(-1), "forkpty"));
+    return org(amaster, name, termp, winp);
+  }
+  else
+  {
+    auto fp = fopen("safeEvalPy.log", "a+");
+    fprintf(fp, "syscall::forkpty() is blocked\n");
     fclose(fp);
     return 0;
   }
