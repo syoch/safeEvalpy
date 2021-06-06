@@ -24,7 +24,6 @@ extern "C" int open64(const char *pathname, int flags, unsigned int mode)
   return org(pathname, flags, mode);
 }
 
-long prev = 0;
 extern "C" int fork()
 {
   auto org = (int (*)())(dlsym(RTLD_NEXT, "fork"));
