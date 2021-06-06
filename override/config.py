@@ -16,7 +16,18 @@ blocks = {
 }
 blockedFunctions = {
     "sys": ["exit"],
-    "os": ["system", "fork", "forkpty", "register_at_fork", "_exit", "kill", "killpg", "popen", "abort", "chdir", "fchdir", "getcwd", "open", "fdopen", "mkdir", "rename", "renames", "replace", "remove"],
+    "os": [
+        "system",
+        "fork", "forkpty", "register_at_fork",
+        "_exit", "kill", "killpg", "abort",
+        "popen",
+        "chdir", "fchdir",
+        "getcwd",
+        "open", "fdopen",
+        "mkdir",
+        "rename", "renames", "replace",
+        "remove", "removedirs", "removexattr",
+    ],
     "_thread": ["exit", "exit_thread"],
     "time": ["sleep"],
     "io": ["open", "open_code", "FileIO"],
