@@ -24,9 +24,17 @@ blockedFunctions = {
         "chdir", "fchdir",
         "getcwd",
         "open", "fdopen",
-        "mkdir",
+        "mkdir", "makedev", "makedirs"
         "rename", "renames", "replace",
         "remove", "removedirs", "removexattr",
+        "rmdir"
+    ],
+    "shutil": [
+        "_rmtree_isdir",
+        "_rmtree_islink",
+        "_rmtree_safe_fd",
+        "_rmtree_unsafe",
+        "rmtree",
     ],
     "_thread": ["exit", "exit_thread"],
     "time": ["sleep"],
