@@ -29,4 +29,12 @@ def _eval(
 
     stdout = core.ctx["stdout"].getvalue()
 
-    return ret, stdout
+    # read preload log
+    try:
+        with open("safeEvalPy.log", "r") as fp:
+            log = fp.read()
+    except Exception as ex:
+        log = ""
+        pass
+
+    return ret, stdout, log
