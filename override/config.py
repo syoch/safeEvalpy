@@ -26,7 +26,7 @@ blockedFunctions = {
         "open", "fdopen",
         "mkdir", "makedev", "makedirs"
         "rename", "renames", "replace",
-        "remove", "removexattr",
+        "remove",
         "removedirs", "rmdir",  # overrided by preload
     ],
     "shutil": [
