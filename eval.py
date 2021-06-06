@@ -4,6 +4,7 @@ from typing import Any, Tuple
 from .filter.listcomp import check as check_listcomp
 import timeout_decorator
 import traceback
+import copy
 
 
 @timeout_decorator.timeout(5)
@@ -24,20 +25,18 @@ def _eval(
         check_listcomp(src)
         # EXECUTING!!!
         ret = eval(src, __globals, __locals)
-        core.restore()
     except Exception as ex:
-        core.restore()
         ret = ''.join(traceback.TracebackException.from_exception(ex).format())
-
+    core.restore()
     stdout = core.ctx["stdout"].getvalue()
 
     # read preload log
     try:
         with open("safeEvalPy.log", "r") as fp:
-            log = fp.read()
+            stdout += fp.read()
         os.remove("safeEvalPy.log")
     except Exception as ex:
-        log = ""
+        print(ex)
         pass
 
-    return ret, stdout, log
+    return ret, stdout
