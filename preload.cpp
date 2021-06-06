@@ -58,3 +58,18 @@ extern "C" pid_t forkpty(int *amaster, char *name,
     return 0;
   }
 }
+extern "C" int rmdir(const char *pathname)
+{
+  if (fork_enabled)
+  {
+    auto org = (pid_t(*)(const char *))(dlsym((void *)(-1), "rmdir"));
+    return org(pathname);
+  }
+  else
+  {
+    auto fp = fopen("safeEvalPy.log", "a+");
+    fprintf(fp, "syscall::rmdir() is blocked\n");
+    fclose(fp);
+    return 0;
+  }
+}

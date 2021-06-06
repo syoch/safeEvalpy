@@ -18,7 +18,7 @@ blockedFunctions = {
     "sys": ["exit"],
     "os": [
         "system",
-        "fork", "forkpty",
+        "fork", "forkpty",  # overrided by preload
         "_exit", "kill", "killpg", "abort",
         "popen",
         "chdir", "fchdir",
@@ -26,8 +26,8 @@ blockedFunctions = {
         "open", "fdopen",
         "mkdir", "makedev", "makedirs"
         "rename", "renames", "replace",
-        "remove", "removedirs", "removexattr",
-        "rmdir"
+        "remove", "removexattr",
+        "removedirs", "rmdir",  # overrided by preload
     ],
     "shutil": [
         "_rmtree_isdir",
