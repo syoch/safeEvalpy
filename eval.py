@@ -1,4 +1,5 @@
 import importlib
+import os
 from typing import Any, Tuple
 from .filter.listcomp import check as check_listcomp
 import timeout_decorator
@@ -33,6 +34,7 @@ def _eval(
     try:
         with open("safeEvalPy.log", "r") as fp:
             log = fp.read()
+        os.remove("safeEvalPy.log")
     except Exception as ex:
         log = ""
         pass
