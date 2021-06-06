@@ -32,6 +32,7 @@ def _eval(
     stdout = core.ctx["stdout"].getvalue()
 
     # read preload log
+    importlib.reload(os)  # for use os.remove
     try:
         with open("safeEvalPy.log", "r") as fp:
             stdout += fp.read()
@@ -39,5 +40,4 @@ def _eval(
     except Exception as ex:
         print(ex)
         pass
-
     return ret, stdout
