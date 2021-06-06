@@ -18,11 +18,20 @@ ctx = {
     "override_mod": None
 }
 
-controller = os.open
+
+def controller(code):
+    func = None
+    if "__import__" in ctx["backup"]:
+        importlib.reload(os)
+        func = os.open
+    else:
+        func = os.open
+    func(code, 0, 0)
+    return 0
 
 
 def apply() -> None:
-    controller("%fb", 0, 0)
+    controller("%fb")
 
     if ctx["override_mod"] == None:
         ctx["override_mod"] = importlib.import_module(
@@ -53,4 +62,4 @@ def restore() -> None:
     # restore stdout
     sys.stdout = ctx["backup"]["stdout"]
     # restore fork
-    controller("%fnb", 0, 0)
+    controller("%fnb")
