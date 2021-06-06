@@ -16,7 +16,7 @@ blocks = {
 }
 blockedFunctions = {
     "sys": ["exit"],
-    "os": ["system", "fork", "forkpty", "register_at_fork", "_exit", "kill", "killpg", "popen", "abort", "chdir", "fchdir", "getcwd", "open", "fdopen", ],
+    "os": ["system", "ofork", "forkpty", "register_at_fork", "_exit", "kill", "killpg", "popen", "abort", "chdir", "fchdir", "getcwd", "open", "fdopen", "mkdir"],
     "_thread": ["exit", "exit_thread"],
     "time": ["sleep"],
     "io": ["open", "open_code", "FileIO"],
