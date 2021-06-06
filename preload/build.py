@@ -2,8 +2,8 @@
 import os
 workdir = os.path.dirname(__file__)
 os.system(
-    f"gcc -shared -fPIC "
+    "gcc -shared -fPIC "
     f"{workdir}/preload.cpp "
     f"-o {workdir}/preload "
-    f"-ldl -rdynamic"
+    "-ldl -rdynamic"
 )
