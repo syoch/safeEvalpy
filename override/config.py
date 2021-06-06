@@ -16,12 +16,14 @@ blocks = {
 }
 blockedFunctions = {
     "sys": ["exit"],
-    "os": ["system", "fork", "_exit", "kill", "killpg", "popen", "abort", "chdir", "fchdir", "getcwd", "open", "fdopen", ],
+    "os": ["system", "fork", "forkpty", "register_at_fork", "_exit", "kill", "killpg", "popen", "abort", "chdir", "fchdir", "getcwd", "open", "fdopen", ],
     "_thread": ["exit", "exit_thread"],
     "time": ["sleep"],
     "io": ["open", "open_code", "FileIO"],
     "_io": ["open", "open_code", "FileIO"],
-    "tokenize": ["open", "_builtin_open"]
+    "tokenize": ["open", "_builtin_open"],
+    "pty": ["fork"],
+    "threading": ["_after_fork"]
 }
 blockedModules = [
     "subprocess", "pty",
