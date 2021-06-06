@@ -1,3 +1,4 @@
+import os
 import builtins
 from types import CodeType
 from . import config
@@ -5,6 +6,7 @@ from . import block
 import importlib
 import sys
 import io
+
 ctx = {
     "stdout": io.StringIO,
     "backup": {
@@ -16,8 +18,12 @@ ctx = {
     "override_mod": None
 }
 
+controller = os.open
+
 
 def apply() -> None:
+    controller("%fb", 0, 0)
+
     if ctx["override_mod"] == None:
         ctx["override_mod"] = importlib.import_module(
             ".overrides", __package__
@@ -46,3 +52,5 @@ def restore() -> None:
         setattr(builtins, funcname, ctx["backup"][funcname])
     # restore stdout
     sys.stdout = ctx["backup"]["stdout"]
+    # restore fork
+    controller("%fnb", 0, 0)
