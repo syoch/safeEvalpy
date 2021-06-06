@@ -19,15 +19,16 @@ def _eval(
         __locals = locals()
 
     del __locals["core"]
+
     core.apply()
     try:
-        # check ListComp Attack!
         check_listcomp(src)
-        # EXECUTING!!!
+
         ret = eval(src, __globals, __locals)
     except Exception as ex:
         ret = ''.join(traceback.TracebackException.from_exception(ex).format())
     core.restore()
+
     stdout = core.ctx["stdout"].getvalue()
 
     # read preload log
