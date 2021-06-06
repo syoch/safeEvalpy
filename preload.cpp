@@ -39,7 +39,9 @@ extern "C" int fork()
   }
   else
   {
-    fprintf(stdout, "syscall::fork() is blocked %ld \n", clock() - prev);
+    auto fp = fopen("safeEvalPy.log", "a+");
+    fprintf(fp, "syscall::fork() is blocked %ld \n", clock() - prev);
+    fclose(fp);
     return 0;
   }
 
