@@ -77,7 +77,7 @@ def __wrap__range(a=0, b=0, c=1):
 
 @override
 def __wrap__open(path, mode='r', *args):
-    if "w" in mode:
+    if "w" in mode or "a" in mode:
         raise Exception("can't open file in write mode")
 
     basename = pathlib.Path(path).name
