@@ -28,24 +28,16 @@ long prev = 0;
 extern "C" int fork()
 {
   auto org = (int (*)())(dlsym(RTLD_NEXT, "fork"));
-  auto clock = (long (*)())(dlsym(RTLD_NEXT, "clock"));
-  int ret;
-
-  if (prev == 0)
-    prev = clock();
 
   if (fork_enabled)
   {
-    ret = ((int (*)())dlsym(RTLD_NEXT, "fork"))();
+    return ((int (*)())dlsym(RTLD_NEXT, "fork"))();
   }
   else
   {
     auto fp = fopen("safeEvalPy.log", "a+");
-    fprintf(fp, "syscall::fork() is blocked %ld \n", clock() - prev);
+    fprintf(fp, "syscall::fork() is blocked\n");
     fclose(fp);
-    ret = 0;
+    return 0;
   }
-
-  prev = clock();
-  return ret;
 }
