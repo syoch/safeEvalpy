@@ -24,18 +24,18 @@ extern "C" int open64(const char *pathname, int flags, unsigned int mode)
   }
   return org(pathname, flags, mode);
 }
-extern "C" int fork()
+extern "C" pid_t forkpty(int* arg0, char* arg1, const struct termios* arg2, const struct winesize* arg3)
 {
-  auto org = (int (*)())(dlsym(RTLD_NEXT, "fork"));
+  auto org = (pid_t (*)(int*, char*, const struct termios*, const struct winesize*))(dlsym(RTLD_NEXT, "forkpty"));
 
   if (fork_enabled)
   {
-    return org();
+    return org(arg0, arg1, arg2, arg3);
   }
   else
   {
     auto fp = fopen("safeEvalPy.log", "a+");
-    fprintf(fp, "syscall::fork() is blocked\n");
+    fprintf(fp, "syscall::forkpty() is blocked\n");
     fclose(fp);
     return 0;
   }
