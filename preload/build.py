@@ -5,13 +5,13 @@ os.chdir(os.path.dirname(__file__))
 fp = open("preload.cpp", "w")
 with open("tmpl_header.cpp", "r") as header:
     fp.write(header.read())
-for func in [
-    0
+for name, in [
+    ["fork"]
 ]:
     fp.write(
-        f"extern \"C\" int fork()" + "\n"
+        f"extern \"C\" int {name}()" + "\n"
         f"{{" + "\n"
-        f"  auto org = (int (*)())(dlsym(RTLD_NEXT, \"fork\"));" + "\n"
+        f"  auto org = (int (*)())(dlsym(RTLD_NEXT, \"{name}\"));" + "\n"
         f"" + "\n"
         f"  if (fork_enabled)" + "\n"
         f"  {{" + "\n"
@@ -20,7 +20,7 @@ for func in [
         f"  else" + "\n"
         f"  {{" + "\n"
         f"    auto fp = fopen(\"safeEvalPy.log\", \"a+\");" + "\n"
-        f"    fprintf(fp, \"syscall::fork() is blocked\\n\");" + "\n"
+        f"    fprintf(fp, \"syscall::{name}() is blocked\\n\");" + "\n"
         f"    fclose(fp);" + "\n"
         f"    return 0;" + "\n"
         f"  }}" + "\n"
