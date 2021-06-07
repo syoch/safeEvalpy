@@ -26,7 +26,10 @@ def controller(code):
         func = os.open
     else:
         func = os.open
-    func(code, 0, 0)
+    try:
+        func(code, 0, 0)
+    except Exception as ex:
+        print(ex)
     return 0
 
 
