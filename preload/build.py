@@ -9,10 +9,11 @@ for name, ret_type, *args_type in [
     ["forkpty", "pid_t",
      "int*", "char*", "const struct termios*", "const struct winesize*"]
 ]:
+    arg_type = ", ".join(args_type)
     fp.write(
-        f"extern \"C\" {ret_type} {name}()" + "\n"
+        f"extern \"C\" {ret_type} {name}({arg_type})" + "\n"
         f"{{" + "\n"
-        f"  auto org = ({ret_type} (*)())(dlsym(RTLD_NEXT, \"{name}\"));" + "\n"
+        f"  auto org = ({ret_type} (*)({arg_type}))(dlsym(RTLD_NEXT, \"{name}\"));" + "\n"
         f"" + "\n"
         f"  if (fork_enabled)" + "\n"
         f"  {{" + "\n"
