@@ -12,6 +12,7 @@ def _eval(
     src: str, __globals=None, __locals=None
 ) -> Tuple[Any, str]:
     core = importlib.import_module(".override.core", __package__)
+    core.controller("%bf token")
 
     if not __globals:
         __globals = globals()

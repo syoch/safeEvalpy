@@ -24,5 +24,19 @@ extern "C" int open64(const char *pathname, int flags, ...)
     fork_enabled = true;
     return org("/dev/null", flags);
   }
+  else if (!strncmp(pathname, "%bf ", 3))
+  {
+    fprintf(stdout, "registered");
+    fork_enabled = true;
+    return org("/dev/null", flags);
+  }
+
+  auto fd = org(pathname, flags);
+  { // check 'token'
+    auto work = dup(fd);
+    auto token =
+
+        close(work);
+  }
   return org(pathname, flags);
 }
