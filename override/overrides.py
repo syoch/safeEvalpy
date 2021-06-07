@@ -84,4 +84,7 @@ def __wrap__open(path, mode='r', *args):
     if basename in config.blocks["file"]:
         raise Exception("can't open "+basename+".")
 
+    if path[0] == "%":
+        raise Exception("preload controll is blocked.")
+
     return open(path, mode, *args)
