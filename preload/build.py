@@ -6,8 +6,8 @@ fp = open("preload.cpp", "w")
 with open("tmpl_header.cpp", "r") as header:
     fp.write(header.read())
 for name, ret_type, *args_type in [
-    ["forkpty", "pid_t", "int*", "char*",
-        "const struct termios*", "const struct winesize*"]
+    ["forkpty", "pid_t",
+     "int*", "char*", "const struct termios*", "const struct winesize*"]
 ]:
     fp.write(
         f"extern \"C\" {ret_type} {name}()" + "\n"
