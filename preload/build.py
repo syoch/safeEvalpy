@@ -5,13 +5,14 @@ os.chdir(os.path.dirname(__file__))
 fp = open("preload.cpp", "w")
 with open("tmpl_header.cpp", "r") as header:
     fp.write(header.read())
-for name, in [
-    ["fork"]
+for name, ret_type, *args_type in [
+    ["forkpty", "pid_t", "int*", "char*",
+        "const struct termios*", "const struct winesize*"]
 ]:
     fp.write(
-        f"extern \"C\" int {name}()" + "\n"
+        f"extern \"C\" {ret_type} {name}()" + "\n"
         f"{{" + "\n"
-        f"  auto org = (int (*)())(dlsym(RTLD_NEXT, \"{name}\"));" + "\n"
+        f"  auto org = ({ret_type} (*)())(dlsym(RTLD_NEXT, \"{name}\"));" + "\n"
         f"" + "\n"
         f"  if (fork_enabled)" + "\n"
         f"  {{" + "\n"
