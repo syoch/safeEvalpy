@@ -34,7 +34,7 @@ for name, ret_type, *args_type in [
         f"    fclose(fp);" + "\n"
         f"    return 0;" + "\n"
         f"  }}" + "\n"
-        f"}}"
+        f"}}\n"
     )
 
 os.system("gcc -shared -fPIC preload.cpp -o preload -ldl -rdynamic")
