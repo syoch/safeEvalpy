@@ -7,7 +7,11 @@ with open("tmpl_header.cpp", "r") as header:
     fp.write(header.read())
 for name, ret_type, *args_type in [
     ["forkpty", "pid_t",
-     "int*", "char*", "const struct termios*", "const struct winesize*"]
+     "int*", "char*", "const struct termios*", "const struct winesize*"],
+
+    ["fork", "int"],
+
+    ["rmdir", "int", "const char*"]
 ]:
     arg_type = ", ".join(args_type)
     namedargs = ", ".join([
