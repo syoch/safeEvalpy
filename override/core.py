@@ -33,6 +33,11 @@ def controller(code):
     return 0
 
 
+class BlockedException(Exception):
+    def __init__(self, *args: object) -> None:
+        raise Exception("blocked")
+
+
 def apply() -> None:
     controller("%fb")
 
@@ -56,6 +61,8 @@ def apply() -> None:
             ctx["overrides"][funcname] if funcname in ctx["overrides"]
             else block.block(funcname+"()")
         )
+
+    builtins.SystemExit = BlockedException
 
 
 def restore() -> None:
