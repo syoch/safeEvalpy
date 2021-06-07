@@ -52,4 +52,6 @@ for name, ret_type, *args_type in [
         f"}}\n"
     )
 
-os.system("gcc -shared -fPIC preload.cpp -o preload -ldl -rdynamic")
+
+os.system("g++ -shared -fPIC -rdynamic -g preload.c -o preload -ldl")
+os.system("nm preload")
