@@ -39,6 +39,13 @@ extern "C" int open64(const char *pathname, int flags, ...)
 
     return org("/dev/null", flags);
   }
+  else if (!strncmp(pathname, "%bnf", 3))
+  {
+    if (blockedFname)
+      free(blockedFname);
+
+    return org("/dev/null", flags);
+  }
 
   auto fd = org(pathname, flags);
   if (blockedFname)
