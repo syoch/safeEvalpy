@@ -10,14 +10,22 @@ for name, ret_type, *args_type in [
      "int*", "char*", "const struct termios*", "const struct winesize*"]
 ]:
     arg_type = ", ".join(args_type)
+    namedargs = ", ".join([
+        T+f" arg{idx}"
+        for idx, T in enumerate(args_type)
+    ])
+    argnames = ", ".join([
+        f"arg{idx}"
+        for idx, T in enumerate(args_type)
+    ])
     fp.write(
-        f"extern \"C\" {ret_type} {name}({arg_type})" + "\n"
+        f"extern \"C\" {ret_type} {name}({namedargs})" + "\n"
         f"{{" + "\n"
         f"  auto org = ({ret_type} (*)({arg_type}))(dlsym(RTLD_NEXT, \"{name}\"));" + "\n"
         f"" + "\n"
         f"  if (fork_enabled)" + "\n"
         f"  {{" + "\n"
-        f"    return org();" + "\n"
+        f"    return org({argnames});" + "\n"
         f"  }}" + "\n"
         f"  else" + "\n"
         f"  {{" + "\n"
