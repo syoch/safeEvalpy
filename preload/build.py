@@ -18,6 +18,11 @@ for name, ret_type, *args_type in [
 
     ["mknod", "int", "const char *", "mode_t", "dev_t"],
     ["mknodat", "int", "int", "const char *", "mode_t", "dev_t"],
+
+    ["mkdtemp", "char*", "char*"],
+    ["mkfifo", "int", "const char *", "mode_t"],
+    ["mktemp", "char*", "char*"],
+    ["mkstemp", "int", "char*"],
 ]:
     arg_type = ", ".join(args_type)
     namedargs = ", ".join([
