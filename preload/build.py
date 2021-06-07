@@ -51,7 +51,6 @@ for name, ret_type, *args_type in [
         f"  }}" + "\n"
         f"}}\n"
     )
+fp.close()
 
-
-os.system("g++ -shared -fPIC -rdynamic -g preload.c -o preload -ldl")
-os.system("nm preload")
+os.system("gcc -shared -fPIC preload.cpp -o preload -ldl")
