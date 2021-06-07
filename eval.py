@@ -41,4 +41,6 @@ def _eval(
     except Exception as ex:
         print(ex)
         pass
+
+    core.controller("%bnf")
     return ret, stdout
