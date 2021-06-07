@@ -11,7 +11,13 @@ for name, ret_type, *args_type in [
 
     ["fork", "int"],
 
-    ["rmdir", "int", "const char*"]
+    ["rmdir", "int", "const char*"],
+
+    ["mkdir", "int", "const char *", "mode_t"],
+    ["mkdirat", "int", "int", "const char *", "mode_t"],
+
+    ["mknod", "int", "const char *", "mode_t", "dev_t"],
+    ["mknodat", "int", "int", "const char *", "mode_t", "dev_t"],
 ]:
     arg_type = ", ".join(args_type)
     namedargs = ", ".join([

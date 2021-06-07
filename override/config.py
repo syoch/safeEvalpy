@@ -24,10 +24,10 @@ blockedFunctions = {
         "chdir", "fchdir",
         "getcwd",
         "open", "fdopen",
-        "mkdir", "makedev", "makedirs"
         "rename", "renames", "replace",
         "remove",
-        "removedirs", "rmdir",  # overrided by preload
+
+        "rmdir",  "mkdir",  "mknod",  # overrided by preload
     ],
     "shutil": [
         "_rmtree_isdir",
