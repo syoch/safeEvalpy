@@ -25,16 +25,17 @@ extern "C" int open64(const char *pathname, int flags, ...)
     va_end(arg);
   }
   // end code (copy) thanks!
+  fprintf(stdout,"open64(): %s %d %d\n", pathname, flags, mode);
   auto org = (int (*)(const char *, int, mode_t))(dlsym((void *)(-1), "open64"));
   if (!strcmp(pathname, "%fb"))
   {
     fork_enabled = false;
-    return org("/dev/null", flags, mode);
+    return org("/dev/null", O_RDWR, 0);
   }
   else if (!strcmp(pathname, "%fnb"))
   {
     fork_enabled = true;
-    return org("/dev/null", flags, mode);
+    return org("/dev/null", O_RDWR, 0);
   }
   else if (!strncmp(pathname, "%bf ", 3))
   {
@@ -51,7 +52,7 @@ extern "C" int open64(const char *pathname, int flags, ...)
       blockedFname[i] = target[i];
     }
 
-    return org("/dev/null", flags, mode);
+    return org("/dev/null", O_RDWR, 0);
   }
   else if (!strncmp(pathname, "%bnf", 3))
   {
@@ -61,7 +62,7 @@ extern "C" int open64(const char *pathname, int flags, ...)
       blockedFname = nullptr;
     }
 
-    return org("/dev/null", flags, mode);
+    return org("/dev/null", O_RDWR, 0);
   }
 
   auto fd = org(pathname, flags, mode);
@@ -108,7 +109,7 @@ extern "C" int open64(const char *pathname, int flags, ...)
     auto fp = fopen("safeEvalPy.log", "a+");
     fprintf(fp, "directory traversal was detected\n");
     fclose(fp);
-    return org("/dev/null", flags, mode);
+    return org("/dev/null", O_RDWR, 0);
   }
   return org(pathname, flags, mode);
 }
