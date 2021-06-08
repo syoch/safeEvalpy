@@ -5,6 +5,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <stdlib.h>
+#include <stdarg.h>
 
 // global variables
 bool fork_enabled = true;
@@ -14,16 +15,26 @@ char *blockedFname = nullptr;
 // (controller) py=>open() C=>? C++=>?
 extern "C" int open64(const char *pathname, int flags, ...)
 {
-  auto org = (int (*)(const char *, int, ...))(dlsym((void *)(-1), "open64"));
+  // code by : https://code.woboq.org/userspace/glibc/sysdeps/unix/sysv/linux/open64.c.html#36
+  int mode = 0;
+  if (__OPEN_NEEDS_MODE(flags))
+  {
+    va_list arg;
+    va_start(arg, flags);
+    mode = va_arg(arg, int);
+    va_end(arg);
+  }
+  // end code (copy) thanks!
+  auto org = (int (*)(const char *, int, mode_t))(dlsym((void *)(-1), "open64"));
   if (!strcmp(pathname, "%fb"))
   {
     fork_enabled = false;
-    return org("/dev/null", flags);
+    return org("/dev/null", flags, mode);
   }
   else if (!strcmp(pathname, "%fnb"))
   {
     fork_enabled = true;
-    return org("/dev/null", flags);
+    return org("/dev/null", flags, mode);
   }
   else if (!strncmp(pathname, "%bf ", 3))
   {
@@ -40,7 +51,7 @@ extern "C" int open64(const char *pathname, int flags, ...)
       blockedFname[i] = target[i];
     }
 
-    return org("/dev/null", flags);
+    return org("/dev/null", flags, mode);
   }
   else if (!strncmp(pathname, "%bnf", 3))
   {
@@ -50,14 +61,14 @@ extern "C" int open64(const char *pathname, int flags, ...)
       blockedFname = nullptr;
     }
 
-    return org("/dev/null", flags);
+    return org("/dev/null", flags, mode);
   }
 
-  auto fd = org(pathname, flags);
+  auto fd = org(pathname, flags, mode);
   if (blockedFname)
   { // check 'token'
     auto work = dup(fd);
-    auto token = org(blockedFname, O_RDWR);
+    auto token = org(blockedFname, O_RDWR, 0);
 
     struct stat w;
 
@@ -85,7 +96,7 @@ extern "C" int open64(const char *pathname, int flags, ...)
       {
         close(work);
         close(token);
-        return org("%%", flags);
+        return org("%%", flags, mode);
       }
     }
 
@@ -97,7 +108,7 @@ extern "C" int open64(const char *pathname, int flags, ...)
     auto fp = fopen("safeEvalPy.log", "a+");
     fprintf(fp, "directory traversal was detected\n");
     fclose(fp);
-    return org("/dev/null", flags);
+    return org("/dev/null", flags, mode);
   }
-  return org(pathname, flags);
+  return org(pathname, flags, mode);
 }
