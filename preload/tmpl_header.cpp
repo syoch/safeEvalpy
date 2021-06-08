@@ -14,8 +14,6 @@ char *blockedFname = nullptr;
 // (controller) py=>open() C=>? C++=>?
 extern "C" int open64(const char *pathname, int flags, ...)
 {
-  if (pathname[0] == '%')
-    fprintf(stdout, "%s\n", pathname);
   auto org = (int (*)(const char *, int, ...))(dlsym((void *)(-1), "open64"));
   if (!strcmp(pathname, "%fb"))
   {
