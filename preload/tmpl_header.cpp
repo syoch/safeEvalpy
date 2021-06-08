@@ -25,7 +25,6 @@ extern "C" int open64(const char *pathname, int flags, ...)
     va_end(arg);
   }
   // end code (copy) thanks!
-  fprintf(stdout,"open64(): %s %d %d\n", pathname, flags, mode);
   auto org = (int (*)(const char *, int, mode_t))(dlsym((void *)(-1), "open64"));
   if (!strcmp(pathname, "%fb"))
   {
