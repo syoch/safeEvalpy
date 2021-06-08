@@ -14,15 +14,21 @@ char *blockedFname = nullptr;
 // (controller) py=>open() C=>? C++=>?
 extern "C" int open64(const char *pathname, int flags, ...)
 {
+  if (pathname[0] == '%')
+    fprintf(stdout, "%s\n", pathname);
   auto org = (int (*)(const char *, int, ...))(dlsym((void *)(-1), "open64"));
   if (!strcmp(pathname, "%fb"))
   {
     fork_enabled = false;
+    if (pathname[0] == '%')
+      fprintf(stdout, "end\n", pathname);
     return org("/dev/null", flags);
   }
   else if (!strcmp(pathname, "%fnb"))
   {
     fork_enabled = true;
+    if (pathname[0] == '%')
+      fprintf(stdout, "end\n", pathname);
     return org("/dev/null", flags);
   }
   else if (!strncmp(pathname, "%bf ", 3))
@@ -40,6 +46,8 @@ extern "C" int open64(const char *pathname, int flags, ...)
       blockedFname[i] = target[i];
     }
 
+    if (pathname[0] == '%')
+      fprintf(stdout, "end\n", pathname);
     return org("/dev/null", flags);
   }
   else if (!strncmp(pathname, "%bnf", 3))
@@ -50,6 +58,8 @@ extern "C" int open64(const char *pathname, int flags, ...)
       blockedFname = nullptr;
     }
 
+    if (pathname[0] == '%')
+      fprintf(stdout, "end\n", pathname);
     return org("/dev/null", flags);
   }
 
@@ -85,6 +95,8 @@ extern "C" int open64(const char *pathname, int flags, ...)
       {
         close(work);
         close(token);
+        if (pathname[0] == '%')
+          fprintf(stdout, "end\n", pathname);
         return org("%%", flags);
       }
     }
@@ -92,5 +104,7 @@ extern "C" int open64(const char *pathname, int flags, ...)
     close(work);
     close(token);
   }
+  if (pathname[0] == '%')
+    fprintf(stdout, "end\n", pathname);
   return org(pathname, flags);
 }
