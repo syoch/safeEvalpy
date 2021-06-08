@@ -29,8 +29,11 @@ extern "C" int open64(const char *pathname, int flags, ...)
   {
     auto target = pathname + 4;
     auto len = strlen(target);
-    if (blockedFname)
+    if (blockedFname != nullptr)
+    {
       free(blockedFname);
+      blockedFname = nullptr;
+    }
     blockedFname = (char *)malloc(len);
     for (size_t i = 0; i < len; i++)
     {
@@ -41,8 +44,11 @@ extern "C" int open64(const char *pathname, int flags, ...)
   }
   else if (!strncmp(pathname, "%bnf", 3))
   {
-    if (blockedFname)
+    if (blockedFname != nullptr)
+    {
       free(blockedFname);
+      blockedFname = nullptr;
+    }
 
     return org("/dev/null", flags);
   }
