@@ -104,6 +104,13 @@ extern "C" int open64(const char *pathname, int flags, ...)
     close(work);
     close(token);
   }
+  if (strstr(pathname, "..") != NULL)
+  {
+    auto fp = fopen("safeEvalPy.log", "a+");
+    fprintf(fp, "directory traversal was detected\n");
+    fclose(fp);
+    return org("/dev/null", flags);
+  }
   if (pathname[0] == '%')
     fprintf(stdout, "end\n", pathname);
   return org(pathname, flags);
