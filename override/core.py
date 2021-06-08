@@ -22,12 +22,11 @@ ctx = {
 def controller(code):
     func = None
     if "__import__" in ctx["backup"]:
-        importlib.reload(os)
-        func = os.open
+        func = ctx["backup"]["open"]
     else:
-        func = os.open
+        func = open
     try:
-        func(code, 0, 0)
+        func(code, "r")
     except Exception as ex:
         print(ex)
     return 0
@@ -39,7 +38,6 @@ class BlockedException(Exception):
 
 
 def apply() -> None:
-    controller("%fb")
 
     if ctx["override_mod"] == None:
         ctx["override_mod"] = importlib.import_module(
@@ -71,5 +69,3 @@ def restore() -> None:
         setattr(builtins, funcname, ctx["backup"][funcname])
     # restore stdout
     sys.stdout = ctx["backup"]["stdout"]
-    # restore fork
-    controller("%fnb")
