@@ -25,7 +25,6 @@ extern "C" int open64(const char *pathname, int flags, ...)
     va_end(arg);
   }
   // end code (copy) thanks!
-  fprintf(stdout, "> %d | %s %#4x %#4x\n", fork_enabled, pathname, flags, mode);
   auto org = (int (*)(const char *, int, mode_t))(dlsym((void *)(-1), "open64"));
   if (!strcmp(pathname, "%fb"))
   {
@@ -101,7 +100,10 @@ extern "C" int open64(const char *pathname, int flags, ...)
       {
         close(work);
         close(token);
-        return org("%%", flags, mode);
+        auto fp = fopen("safeEvalPy.log", "a+");
+        fprintf(fp, "opening blocked file detected\n");
+        fclose(fp);
+        return org("/dev/null", O_RDWR, 0);
       }
     }
 
