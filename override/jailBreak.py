@@ -8,7 +8,7 @@ def jailbreak(func):
     def wrapped(*args, **kw):
         core.restore()
         try:
-            ret = func(*args, *kw)
+            ret = func(*args, **kw)
         except Exception as ex:
             ret = None
             hook.myRaise(type(ex), ex, ex.__traceback__)
