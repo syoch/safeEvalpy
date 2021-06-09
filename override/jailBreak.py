@@ -1,4 +1,5 @@
 import importlib
+from . import exc_hook as hook
 
 
 def jailbreak(func):
@@ -6,7 +7,11 @@ def jailbreak(func):
 
     def wrapped(*args):
         core.restore()
-        ret = func(*args)
+        try:
+            ret = func(*args)
+        except Exception as ex:
+            ret = None
+            hook.myRaise(type(ex), ex, ex.__traceback__)
         core.apply()
         return ret
 
