@@ -25,6 +25,8 @@ def _eval(
 
     del __locals["core"]
 
+    core.controller("%bf token")
+    core.controller("%fb")
     core.apply()
     try:
         check_listcomp(src)
@@ -32,6 +34,9 @@ def _eval(
         ret = eval(src, __globals, __locals)
     except Exception as ex:
         ret = ''.join(traceback.TracebackException.from_exception(ex).format())
+
+    core.controller("%fnb")
+    core.controller("%bnf")
     core.restore()
 
     stdout = core.ctx["stdout"].getvalue()
@@ -46,6 +51,4 @@ def _eval(
         print(ex)
         pass
 
-    core.controller("%fnb")
-    core.controller("%bnf")
     return ret, stdout
