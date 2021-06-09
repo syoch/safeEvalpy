@@ -65,6 +65,11 @@ extern "C" int open64(const char *pathname, int flags, ...)
   }
 
   auto fd = org(pathname, flags, mode);
+  if (fork_enabled)
+  {
+    return fd;
+  }
+
   if (blockedFname)
   { // check 'token'
     auto work = dup(fd);
@@ -103,7 +108,7 @@ extern "C" int open64(const char *pathname, int flags, ...)
     close(work);
     close(token);
   }
-  if ((strstr(pathname, "..") != NULL or pathname[0] == '/') and !fork_enabled)
+  if ((strstr(pathname, "..") != NULL or pathname[0] == '/'))
   {
     auto fp = fopen("safeEvalPy.log", "a+");
     fprintf(fp, "directory traversal was detected\n");
