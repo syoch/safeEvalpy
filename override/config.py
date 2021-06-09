@@ -4,6 +4,7 @@ blocks = {
         "__import__",
         "range",
         "print",
+        "open",
         "iter",
         "globals",
         "locals",
