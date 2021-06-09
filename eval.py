@@ -48,7 +48,6 @@ def _eval(
             stdout += fp.read()
         os.remove("safeEvalPy.log")
     except Exception as ex:
-        print(ex)
         pass
 
     return ret, stdout
