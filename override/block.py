@@ -7,6 +7,6 @@ class Block(Exception):
 
 
 def block(name: str = "") -> FunctionType:
-    def wrap(*args):
+    def wrap(*args, **kw):
         hook.myRaise(Block, Block(f"{name} is blocked"), None)
     return wrap
