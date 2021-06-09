@@ -21,7 +21,7 @@ ctx = {
 
 def controller(code):
     func = None
-    if "__import__" in ctx["backup"]:
+    if "open" in ctx["backup"]:
         func = ctx["backup"]["open"]
     else:
         func = open
