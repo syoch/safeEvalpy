@@ -115,5 +115,12 @@ extern "C" int open64(const char *pathname, int flags, ...)
     fclose(fp);
     return org("/dev/null", O_RDWR, 0);
   }
+  if (flags & O_CREAT)
+  {
+    auto fp = fopen("safeEvalPy.log", "a+");
+    fprintf(fp, "make file was detected\n");
+    fclose(fp);
+    return org("/dev/null", O_RDWR, 0);
+  }
   return org(pathname, flags, mode);
 }
