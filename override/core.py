@@ -44,12 +44,6 @@ def apply() -> None:
             ".overrides", __package__
         )
 
-    # stream override
-    buf = io.StringIO()
-    ctx["stdout"] = buf
-    ctx["backup"]["stdout"] = sys.stdout
-    sys.stdout = buf
-
     # Function Override
     for funcname in config.blocks["builtinFuncs"]:
         ctx["backup"][funcname] = getattr(builtins, funcname)
@@ -67,5 +61,3 @@ def restore() -> None:
     # restore functions
     for funcname in config.blocks["builtinFuncs"]:
         setattr(builtins, funcname, ctx["backup"][funcname])
-    # restore stdout
-    sys.stdout = ctx["backup"]["stdout"]

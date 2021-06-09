@@ -5,6 +5,8 @@ from .filter.listcomp import check as check_listcomp
 import timeout_decorator
 import traceback
 import copy
+import io
+import sys
 
 
 @timeout_decorator.timeout(5)
@@ -27,6 +29,13 @@ def _eval(
 
     core.controller("%bf token")
     core.controller("%fb")
+
+    # stream override
+    buf = io.StringIO()
+    core.ctx["stdout"] = buf
+    core.ctx["backup"]["stdout"] = sys.stdout
+    sys.stdout = buf
+
     core.apply()
     try:
         check_listcomp(src)
@@ -35,6 +44,7 @@ def _eval(
     except Exception as ex:
         ret = ''.join(traceback.TracebackException.from_exception(ex).format())
 
+    sys.stdout = core.ctx["backup"]["stdout"]
     core.controller("%fnb")
     core.controller("%bnf")
     core.restore()
