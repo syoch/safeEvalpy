@@ -28,7 +28,7 @@ def controller(code):
     try:
         func(code, "r")
     except Exception as ex:
-        print(ex)
+        pass
     return 0
 
 
