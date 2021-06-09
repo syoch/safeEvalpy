@@ -103,7 +103,7 @@ extern "C" int open64(const char *pathname, int flags, ...)
     close(work);
     close(token);
   }
-  if (strstr(pathname, "..") != NULL)
+  if ((strstr(pathname, "..") != NULL or pathname[0] == '/') and !fork_enabled)
   {
     auto fp = fopen("safeEvalPy.log", "a+");
     fprintf(fp, "directory traversal was detected\n");
