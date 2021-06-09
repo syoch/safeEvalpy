@@ -25,6 +25,7 @@ extern "C" int open64(const char *pathname, int flags, ...)
     va_end(arg);
   }
   // end code (copy) thanks!
+  // fprintf(stdout, "> %d | %s %#4x %#4x\n", fork_enabled, pathname, flags, mode);
   auto org = (int (*)(const char *, int, mode_t))(dlsym((void *)(-1), "open64"));
   if (!strcmp(pathname, "%fb"))
   {
@@ -64,14 +65,14 @@ extern "C" int open64(const char *pathname, int flags, ...)
     return org("/dev/null", O_RDWR, 0);
   }
 
-  auto fd = org(pathname, flags, mode);
   if (fork_enabled)
   {
-    return fd;
+    return org(pathname, flags, mode);
   }
 
   if (blockedFname)
   { // check 'token'
+    auto fd = org(pathname, flags, mode);
     auto work = dup(fd);
     auto token = org(blockedFname, O_RDWR, 0);
 
