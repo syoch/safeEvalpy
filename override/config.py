@@ -3,7 +3,6 @@ blocks = {
     "builtinFuncs": [
         "__import__",
         "range",
-        "open",
         "print",
         "iter",
         "globals",
