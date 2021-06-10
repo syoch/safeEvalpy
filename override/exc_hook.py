@@ -1,8 +1,7 @@
 from . import core
 
 
-def myRaise(exc_type, exc_value, tb):
-    dest = core.ctx["stdout"]
+def myRaise(exc_type, exc_value, tb, dest=core.ctx["stdout"]):
 
     print('Exception:', file=dest)
 
