@@ -7,6 +7,7 @@ import traceback
 import copy
 import io
 import sys
+from .override import exc_hook as hook
 
 
 @timeout_decorator.timeout(5)
@@ -42,7 +43,15 @@ def _eval(
 
         ret = eval(src, __globals, __locals)
     except Exception as ex:
-        ret = ''.join(traceback.TracebackException.from_exception(ex).format())
+        ret = ""
+        ret += 'Exception:\n'
+
+        tb = ex.__traceback__
+        while tb:
+            ret += '  in %s:%d\n' % (tb.tb_frame.f_code.co_name, tb.tb_lineno)
+            tb = tb.tb_next
+
+        ret += f'  Detail: ({type(ex).__name__}) {ex}\n'
 
     sys.stdout = core.ctx["backup"]["stdout"]
     core.controller("%fnb")
