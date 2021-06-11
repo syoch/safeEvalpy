@@ -23,8 +23,8 @@ for name, ret_type, *args_type in [
     ["mkfifo", "int", "const char *", "mode_t"],
     ["mktemp", "char*", "char*"],
     ["mkstemp", "int", "char*"],
-    ["opendir", "DIR *", "const char *name"],
-    ["fdopendir", "DIR *", "int fd"],
+    ["opendir", "DIR *", "const char *"],
+    ["fdopendir", "DIR *", "int"],
 ]:
     arg_type = ", ".join(args_type)
     namedargs = ", ".join([
