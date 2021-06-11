@@ -6,6 +6,7 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <dirent.h>
 
 // global variables
 bool fork_enabled = true;
