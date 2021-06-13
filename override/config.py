@@ -18,7 +18,7 @@ blockedFunctions = {
     "sys": ["exit"],
     "os": [
         "system",
-        "fork", "forkpty",  # overrided by preload
+        "fork", "forkpty",  # blocked by preload
         "_exit", "kill", "killpg", "abort",
         "popen",
         "chdir", "fchdir",
@@ -27,14 +27,15 @@ blockedFunctions = {
         "rename", "renames", "replace",
         "remove",
 
-        "rmdir",  "mkdir",  "mknod",  # overrided by preload
+        "rmdir",  "mkdir",  "mknod", "mkfifo",  # blocked by preload
+        "listdir",  # blocked by preload
     ],
     "shutil": [
         "_rmtree_isdir",
         "_rmtree_islink",
         "_rmtree_safe_fd",
         "_rmtree_unsafe",
-        "rmtree",
+        "rmtree",  # blocked by preload
     ],
     "_thread": ["exit", "exit_thread"],
     "time": ["sleep"],
@@ -42,7 +43,8 @@ blockedFunctions = {
     "_io": ["open", "open_code", "FileIO"],
     "tokenize": ["open", "_builtin_open"],
     "pty": ["fork"],
-    "threading": ["_after_fork"]
+    "threading": ["_after_fork"],
+    "tempfile": ["mkdtemp", "mktemp", "mkstemp"]  # blocked by preload
 }
 blockedModules = [
     "subprocess", "pty",

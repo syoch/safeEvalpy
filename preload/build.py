@@ -7,32 +7,35 @@ with open("tmpl_header.cpp", "r") as header:
     fp.write(header.read())
 for name, ret_type, *args_type in [
     ["forkpty", "pid_t",
-     "int*", "char*", "const struct termios*", "const struct winesize*"],
+     "int*", "char*", "const struct termios*", "const struct winesize*"],  # forkpty
     ["openpty", "int", "int*", "char*",
-        "const struct termios*", "const struct winesize*"],
+        "const struct termios*", "const struct winesize*"],  # os.openpty, pty.openpty
     ["login_tty", "int", "int"],
 
-    ["fork", "int"],
+    ["fork", "int"],  # os.fork
 
-    ["rmdir", "int", "const char*"],
+    ["rmdir", "int", "const char*"],  # shutil.rmtree os.rmdir
 
-    ["mkdir", "int", "const char *", "mode_t"],
+    ["mkdir", "int", "const char *", "mode_t"],  # os.mkdir
     ["mkdirat", "int", "int", "const char *", "mode_t"],
 
-    ["mknod", "int", "const char *", "mode_t", "dev_t"],
+    ["mknod", "int", "const char *", "mode_t", "dev_t"],  # os.mknod
     ["mknodat", "int", "int", "const char *", "mode_t", "dev_t"],
 
-    ["mkdtemp", "char*", "char*"],
-    ["mkfifo", "int", "const char *", "mode_t"],
-    ["mktemp", "char*", "char*"],
-    ["mkstemp", "int", "char*"],
-    ["opendir", "DIR *", "const char *"],
+    ["mkfifo", "int", "const char *", "mode_t"],  # os.mkfifo
+    ["mkfifoat", "int", "int", "const char *", "mode_t"],  # os.mkfifo
+
+    ["mkdtemp", "char*", "char*"],  # tempfile.mkdtemp
+    ["mktemp", "char*", "char*"],  # tempfile.mktemp
+    ["mkstemp", "int", "char*"],  # tempfile.mkstemp
+
+    ["opendir", "DIR *", "const char *"],  # os.listdir
     ["fdopendir", "DIR *", "int"],
 
-    ["unlink", "int", "const char*"],
+    ["unlink", "int", "const char*"],  # os.unlink
     ["unlinkat", "int", "int", "const char*", "int"],
 
-    ["posix_spawn", "int",
+    ["posix_spawn", "int",  # os.posix_spawn
         "pid_t*",
         "const char*",
         "const posix_spawn_file_actions_t*",
@@ -40,15 +43,16 @@ for name, ret_type, *args_type in [
         "char* const*",
         "char* const*"
      ],
-    ["posix_spawnp", "int",
-        "pid_t*",
-        "const char*",
+    ["posix_spawnp", "int",  # os.posix_spawnp
+        "pid_t*", "const char*",
         "const posix_spawn_file_actions_t*",
         "const posix_spawnattr_t*",
-        "char* const*",
-        "char* const*"
-     ]
+        "char* const*", "char* const*"
+     ],
 
+    ["exit_group", "void", "int"],
+    ["_exit", "void", "int"],
+    ["_Exit", "void", "int"],
 ]:
     arg_type = ", ".join(args_type)
     namedargs = ", ".join([
