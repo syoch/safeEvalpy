@@ -4,7 +4,7 @@ from typing import Any, Tuple
 from .filter.listcomp import check as check_listcomp
 import timeout_decorator
 import traceback
-import copy
+import pathlib
 import io
 import sys
 
@@ -47,7 +47,14 @@ def _eval(
 
         tb = ex.__traceback__
         while tb:
-            ret += '  in %s:%d\n' % (tb.tb_frame.f_code.co_name, tb.tb_lineno)
+            fname = tb.tb_frame.f_code.co_filename
+            if fname.startswith(os.getcwd()):
+                fname = fname[len(os.getcwd())+1:]
+            ret += '  in %s:%d (%s)\n' % (
+                fname,
+                tb.tb_lineno,
+                tb.tb_frame.f_code.co_name
+            )
             tb = tb.tb_next
 
         ret += f'  Detail: ({type(ex).__name__}) {ex}\n'
