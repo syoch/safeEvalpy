@@ -30,7 +30,45 @@ extern "C" void writelog(const char *fmt, ...)
 
   va_end(ap);
 }
-
+extern "C" bool processcmd(const char *cmd)
+{
+  if (!strcmp(cmd, "%fb"))
+  {
+    fork_enabled = false;
+  }
+  else if (!strcmp(cmd, "%fnb"))
+  {
+    fork_enabled = true;
+  }
+  else if (!strncmp(cmd, "%bf ", 3))
+  {
+    auto target = cmd + 4;
+    auto len = strlen(target);
+    if (blockedFname != nullptr)
+    {
+      free(blockedFname);
+      blockedFname = nullptr;
+    }
+    blockedFname = (char *)malloc(len);
+    for (size_t i = 0; i < len; i++)
+    {
+      blockedFname[i] = target[i];
+    }
+  }
+  else if (!strncmp(cmd, "%bnf", 3))
+  {
+    if (blockedFname != nullptr)
+    {
+      free(blockedFname);
+      blockedFname = nullptr;
+    }
+  }
+  else
+  {
+    return false;
+  }
+  return true;
+}
 extern "C" int open64(const char *pathname, int flags, ...)
 {
   // code by : https://code.woboq.org/userspace/glibc/sysdeps/unix/sysv/linux/open64.c.html#36
@@ -43,43 +81,11 @@ extern "C" int open64(const char *pathname, int flags, ...)
     va_end(arg);
   }
   // end code (copy) thanks!
+
   auto org = (int (*)(const char *, int, mode_t))(dlsym((void *)(-1), "open64"));
-  if (!strcmp(pathname, "%fb"))
+  if (processcmd(pathname))
   {
-    fork_enabled = false;
-    return org("/dev/null", O_RDWR, 0);
-  }
-  else if (!strcmp(pathname, "%fnb"))
-  {
-    fork_enabled = true;
-    return org("/dev/null", O_RDWR, 0);
-  }
-  else if (!strncmp(pathname, "%bf ", 3))
-  {
-    auto target = pathname + 4;
-    auto len = strlen(target);
-    if (blockedFname != nullptr)
-    {
-      free(blockedFname);
-      blockedFname = nullptr;
-    }
-    blockedFname = (char *)malloc(len);
-    for (size_t i = 0; i < len; i++)
-    {
-      blockedFname[i] = target[i];
-    }
-
-    return org("/dev/null", O_RDWR, 0);
-  }
-  else if (!strncmp(pathname, "%bnf", 3))
-  {
-    if (blockedFname != nullptr)
-    {
-      free(blockedFname);
-      blockedFname = nullptr;
-    }
-
-    return org("/dev/null", O_RDWR, 0);
+    return org("/dev/null", O_RDONLY, 0);
   }
 
   if (fork_enabled)
