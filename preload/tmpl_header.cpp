@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <dirent.h>
+#include <spawn.h>
 
 // global variables
 bool fork_enabled = true;

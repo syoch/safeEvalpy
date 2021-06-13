@@ -30,7 +30,25 @@ for name, ret_type, *args_type in [
     ["fdopendir", "DIR *", "int"],
 
     ["unlink", "int", "const char*"],
-    ["unlinkat", "int", "int", "const char*", "int"]
+    ["unlinkat", "int", "int", "const char*", "int"],
+
+    ["posix_spawn", "int",
+        "pid_t*",
+        "const char*",
+        "const posix_spawn_file_actions_t*",
+        "const posix_spawnattr_t*",
+        "char* const*",
+        "char* const*"
+     ],
+    ["posix_spawnp", "int",
+        "pid_t*",
+        "const char*",
+        "const posix_spawn_file_actions_t*",
+        "const posix_spawnattr_t*",
+        "char* const*",
+        "char* const*"
+     ]
+
 ]:
     arg_type = ", ".join(args_type)
     namedargs = ", ".join([
