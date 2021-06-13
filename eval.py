@@ -47,11 +47,8 @@ def _eval(
 
         tb = ex.__traceback__
         while tb:
-            fname = tb.tb_frame.f_code.co_filename
-            if fname.startswith(os.getcwd()):
-                fname = fname[len(os.getcwd())+1:]
             ret += '  in %s:%d (%s)\n' % (
-                fname,
+                tb.tb_frame.f_code.co_filename.replace(os.getcwd(), "."),
                 tb.tb_lineno,
                 tb.tb_frame.f_code.co_name
             )
