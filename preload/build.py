@@ -5,37 +5,37 @@ os.chdir(os.path.dirname(__file__))
 fp = open("preload.cpp", "w")
 with open("tmpl_header.cpp", "r") as header:
     fp.write(header.read())
-for name, ret_type, *args_type in [
-    ["forkpty", "pid_t",
+for name, default, ret_type, *args_type in [
+    ["forkpty", "0", "pid_t",
      "int*", "char*", "const struct termios*", "const struct winesize*"],  # forkpty
-    ["openpty", "int", "int*", "char*",
+    ["openpty", "0", "int", "int*", "char*",
         "const struct termios*", "const struct winesize*"],  # os.openpty, pty.openpty
-    ["login_tty", "int", "int"],
+    ["login_tty", "0", "int", "int"],
 
-    ["fork", "int"],  # os.fork
+    ["fork", "-1", "int"],  # os.fork
 
-    ["rmdir", "int", "const char*"],  # shutil.rmtree os.rmdir
+    ["rmdir", "0", "int", "const char*"],  # shutil.rmtree os.rmdir
 
-    ["mkdir", "int", "const char *", "mode_t"],  # os.mkdir
-    ["mkdirat", "int", "int", "const char *", "mode_t"],
+    ["mkdir", "0", "int", "const char *", "mode_t"],  # os.mkdir
+    ["mkdirat", "0", "int", "int", "const char *", "mode_t"],
 
-    ["mknod", "int", "const char *", "mode_t", "dev_t"],  # os.mknod
-    ["mknodat", "int", "int", "const char *", "mode_t", "dev_t"],
+    ["mknod", "0", "int", "const char *", "mode_t", "dev_t"],  # os.mknod
+    ["mknodat", "0", "int", "int", "const char *", "mode_t", "dev_t"],
 
-    ["mkfifo", "int", "const char *", "mode_t"],  # os.mkfifo
-    ["mkfifoat", "int", "int", "const char *", "mode_t"],  # os.mkfifo
+    ["mkfifo", "0", "int", "const char *", "mode_t"],  # os.mkfifo
+    ["mkfifoat", "0", "int", "int", "const char *", "mode_t"],  # os.mkfifo
 
-    ["mkdtemp", "char*", "char*"],  # tempfile.mkdtemp
-    ["mktemp", "char*", "char*"],  # tempfile.mktemp
-    ["mkstemp", "int", "char*"],  # tempfile.mkstemp
+    ["mkdtemp", "0", "char*", "char*"],  # tempfile.mkdtemp
+    ["mktemp", "0", "char*", "char*"],  # tempfile.mktemp
+    ["mkstemp", "0", "int", "char*"],  # tempfile.mkstemp
 
-    ["opendir", "DIR *", "const char *"],  # os.listdir
-    ["fdopendir", "DIR *", "int"],
+    ["opendir", "0", "DIR *", "const char *"],  # os.listdir
+    ["fdopendir", "0", "DIR *", "int"],
 
-    ["unlink", "int", "const char*"],  # os.unlink
-    ["unlinkat", "int", "int", "const char*", "int"],
+    ["unlink", "0", "int", "const char*"],  # os.unlink
+    ["unlinkat", "0", "int", "int", "const char*", "int"],
 
-    ["posix_spawn", "int",  # os.posix_spawn
+    ["posix_spawn", "0", "int",  # os.posix_spawn
         "pid_t*",
         "const char*",
         "const posix_spawn_file_actions_t*",
@@ -43,16 +43,16 @@ for name, ret_type, *args_type in [
         "char* const*",
         "char* const*"
      ],
-    ["posix_spawnp", "int",  # os.posix_spawnp
+    ["posix_spawnp", "0", "int",  # os.posix_spawnp
         "pid_t*", "const char*",
         "const posix_spawn_file_actions_t*",
         "const posix_spawnattr_t*",
         "char* const*", "char* const*"
      ],
 
-    ["exit_group", "void", "int"],
-    ["_exit", "void", "int"],
-    ["_Exit", "void", "int"],
+    ["exit_group", "0", "void", "int"],
+    ["_exit", "0", "void", "int"],
+    ["_Exit", "0", "void", "int"],
 ]:
     arg_type = ", ".join(args_type)
     namedargs = ", ".join([
@@ -75,7 +75,7 @@ for name, ret_type, *args_type in [
         f"  }}else{{" + "\n"
         f"    writelog(\"syscall::{name}() is blocked\\n\");" + "\n" +
         (
-            f"    return 0;\n" if ret_type != "void"
+            f"    return {default};\n" if ret_type != "void"
             else ""
         ) +
         f"  }}" + "\n"
