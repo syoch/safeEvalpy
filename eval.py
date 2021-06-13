@@ -7,7 +7,6 @@ import traceback
 import copy
 import io
 import sys
-from .override import exc_hook as hook
 
 
 @timeout_decorator.timeout(5)
@@ -61,7 +60,7 @@ def _eval(
     stdout = core.ctx["stdout"].getvalue()
 
     # read preload log
-    importlib.reload(os)  # for use os.remove
+    # importlib.reload(os)  # for use os.remove
     try:
         with open("safeEvalPy.log", "r") as fp:
             stdout += fp.read()
