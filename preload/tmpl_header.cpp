@@ -24,7 +24,6 @@ extern "C" void writelog(const char *fmt, ...)
   vsnprintf(buf, 1024, fmt, ap);
 
   auto fp = fopen("safeEvalPy.log", "a+");
-  fprintf(stdout, "%s", buf);
   fprintf(fp, "%s", buf);
   fclose(fp);
 
