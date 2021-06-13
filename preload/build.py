@@ -8,7 +8,9 @@ with open("tmpl_header.cpp", "r") as header:
 for name, ret_type, *args_type in [
     ["forkpty", "pid_t",
      "int*", "char*", "const struct termios*", "const struct winesize*"],
-
+    ["openpty", "int", "int*", "char*",
+        "const struct termios*", "const struct winesize*"],
+    ["login_tty", "int", "int"],
     ["fork", "int"],
 
     ["rmdir", "int", "const char*"],
