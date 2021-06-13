@@ -63,6 +63,10 @@ extern "C" bool processcmd(const char *cmd)
       blockedFname = nullptr;
     }
   }
+  else if (!strncmp(cmd, "%dbg", 3))
+  {
+    fputs("hello\n", stdout);
+  }
   else
   {
     return false;
