@@ -63,21 +63,21 @@ for name, ret_type, *args_type in [
         f"arg{idx}"
         for idx, T in enumerate(args_type)
     ])
+    attr = "__attribute__ ((noreturn))" if "exit" in name.lower() else ""
     fp.write(
-        f"extern \"C\" {ret_type} {name}({namedargs})" + "\n"
-        f"{{" + "\n"
+        f"extern \"C\" {ret_type} {attr} {name}({namedargs}){{" + "\n"
         f"  auto org = ({ret_type} (*)({arg_type}))(dlsym(RTLD_NEXT, \"{name}\"));" + "\n"
-        f"" + "\n"
-        f"  if (fork_enabled)" + "\n"
-        f"  {{" + "\n"
-        f"    return org({argnames});" + "\n"
-        f"  }}" + "\n"
-        f"  else" + "\n"
-        f"  {{" + "\n"
-        f"    auto fp = fopen(\"safeEvalPy.log\", \"a+\");" + "\n"
-        f"    fprintf(fp, \"syscall::{name}() is blocked\\n\");" + "\n"
-        f"    fclose(fp);" + "\n"
-        f"    return 0;" + "\n"
+        f"  if (fork_enabled==true){{" + "\n" +
+        f"    "+(
+            f"return org({argnames});\n" if ret_type != "void"
+            else f"org({argnames});\n"
+        ) +
+        f"  }}else{{" + "\n"
+        f"    writelog(\"syscall::{name}() is blocked\\n\");" + "\n" +
+        (
+            f"    return 0;\n" if ret_type != "void"
+            else ""
+        ) +
         f"  }}" + "\n"
         f"}}\n"
     )
