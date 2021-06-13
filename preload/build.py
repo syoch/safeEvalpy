@@ -11,6 +11,7 @@ for name, ret_type, *args_type in [
     ["openpty", "int", "int*", "char*",
         "const struct termios*", "const struct winesize*"],
     ["login_tty", "int", "int"],
+
     ["fork", "int"],
 
     ["rmdir", "int", "const char*"],
@@ -27,6 +28,9 @@ for name, ret_type, *args_type in [
     ["mkstemp", "int", "char*"],
     ["opendir", "DIR *", "const char *"],
     ["fdopendir", "DIR *", "int"],
+
+    ["unlink", "int", "const char*"],
+    ["unlinkat", "int", "int", "const char*", "int"]
 ]:
     arg_type = ", ".join(args_type)
     namedargs = ", ".join([
