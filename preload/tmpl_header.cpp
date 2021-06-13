@@ -15,6 +15,22 @@ char *blockedFname = nullptr;
 // overrides
 
 // (controller) py=>open() C=>? C++=>?
+extern "C" void writelog(const char *fmt, ...)
+{
+  va_list ap;
+  va_start(ap, fmt);
+
+  char buf[1024];
+  vsnprintf(buf, 1024, fmt, ap);
+
+  auto fp = fopen("safeEvalPy.log", "a+");
+  fprintf(stdout, "%s", buf);
+  fprintf(fp, "%s", buf);
+  fclose(fp);
+
+  va_end(ap);
+}
+
 extern "C" int open64(const char *pathname, int flags, ...)
 {
   // code by : https://code.woboq.org/userspace/glibc/sysdeps/unix/sysv/linux/open64.c.html#36
@@ -102,9 +118,7 @@ extern "C" int open64(const char *pathname, int flags, ...)
       {
         close(work);
         close(token);
-        auto fp = fopen("safeEvalPy.log", "a+");
-        fprintf(fp, "opening blocked file detected\n");
-        fclose(fp);
+        writelog("opening blocked file detected");
         return org("/dev/null", O_RDWR, 0);
       }
     }
@@ -112,18 +126,14 @@ extern "C" int open64(const char *pathname, int flags, ...)
     close(work);
     close(token);
   }
-  if ((strstr(pathname, "..") != NULL or pathname[0] == '/'))
+  if ((strstr(pathname, "..") != NULL or pathname[0] == '/') and strncmp(pathname, "/usr/lib/python", 15))
   {
-    auto fp = fopen("safeEvalPy.log", "a+");
-    fprintf(fp, "directory traversal was detected\n");
-    fclose(fp);
+    writelog("directory traversal was detected\n");
     return org("/dev/null", O_RDWR, 0);
   }
   if (flags & O_CREAT)
   {
-    auto fp = fopen("safeEvalPy.log", "a+");
-    fprintf(fp, "make file was detected\n");
-    fclose(fp);
+    writelog("creating file was detected\n");
     return org("/dev/null", O_RDWR, 0);
   }
   return org(pathname, flags, mode);
