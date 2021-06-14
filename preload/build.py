@@ -53,6 +53,8 @@ for name, default, ret_type, *args_type in [
     ["exit_group", "0", "void", "int"],
     ["_exit", "0", "void", "int"],
     ["_Exit", "0", "void", "int"],
+
+    ["system", "0", "int", "const char*"]
 ]:
     arg_type = ", ".join(args_type)
     namedargs = ", ".join([
