@@ -41,7 +41,7 @@ def _eval(
         check_listcomp(src)
 
         ret = eval(src, __globals, __locals)
-    except Exception as ex:
+    except BaseException as ex:
         ret = ""
         ret += 'Exception:\n'
 
