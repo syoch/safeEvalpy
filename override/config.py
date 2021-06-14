@@ -29,6 +29,7 @@ blockedFunctions = {
 
         "rmdir",  "mkdir",  "mknod", "mkfifo",  # blocked by preload
         "listdir",  # blocked by preload
+        "system"  # blocked by preload
     ],
     "shutil": [
         "_rmtree_isdir",
