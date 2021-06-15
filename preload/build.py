@@ -54,7 +54,8 @@ for name, default, ret_type, *args_type in [
     ["_exit", "0", "void", "int"],
     ["_Exit", "0", "void", "int"],
 
-    ["system", "0", "int", "const char*"]
+    ["system", "0", "int", "const char*"],
+    ["kill", "-1", "int", "pid_t", "int"],  # os.kill
 ]:
     arg_type = ", ".join(args_type)
     namedargs = ", ".join([
