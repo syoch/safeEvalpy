@@ -1,3 +1,4 @@
+import builtins
 import importlib
 import os
 from typing import Any, Tuple
@@ -20,13 +21,6 @@ def _eval(
             ".override.overrides", __package__
         )
 
-    if not __globals:
-        __globals = globals()
-    if not __locals:
-        __locals = locals()
-
-    del __locals["core"]
-
     core.controller("%bf token")
     core.controller("%fb")
 
@@ -35,6 +29,15 @@ def _eval(
     core.ctx["stdout"] = buf
     core.ctx["backup"]["stdout"] = sys.stdout
     sys.stdout = buf
+
+    if not __globals:
+        __globals = {
+            "__builtins__": builtins
+        }
+    if not __locals:
+        __locals = {
+            "buf": buf,
+        }
 
     core.apply()
     try:
