@@ -43,6 +43,9 @@ def __wrap____import__(name, *args):
     if hasattr(obj, "__loader__"):
         del obj.__loader__
 
+    if hasattr(obj, "__spec__"):
+        del obj.__loader__
+
     return obj
 
 
