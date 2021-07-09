@@ -37,7 +37,8 @@ def _eval(
     if not __locals:
         __locals = {
             "buf": buf,
-            "__loader__": None
+            "__loader__": None,
+            "__spec__": None
         }
 
     core.apply()
