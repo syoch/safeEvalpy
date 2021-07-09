@@ -1,6 +1,5 @@
 import importlib
 import pathlib
-import builtins
 from .config import blockedModules, blockedFunctions
 from . import block
 from . import config
@@ -20,7 +19,7 @@ def override(func):
 def __wrap____import__(name, *args):
     basename = name.split(".")[0]
     if basename.startswith("."):
-        raise block.Block(f"relative import is blocked.")
+        raise block.Block("relative import is blocked.")
 
     if basename in blockedModules:
         raise block.Block(f"Module {basename} is blocked.")
@@ -40,6 +39,9 @@ def __wrap____import__(name, *args):
             if path.split("/")[-1] in config.blocks["file"]:
                 raise Exception("can't open "+basename+".")
         obj.open_code = open_code
+
+    if hasattr(obj, "__loader__"):
+        del obj.__loader__
 
     return obj
 

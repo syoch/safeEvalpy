@@ -4,8 +4,6 @@ import os
 from typing import Any, Tuple
 from .filter.listcomp import check as check_listcomp
 import timeout_decorator
-import traceback
-import pathlib
 import io
 import sys
 
@@ -16,7 +14,7 @@ def _eval(
 ) -> Tuple[Any, str]:
     core = importlib.import_module(".override.core", __package__)
 
-    if core.ctx["override_mod"] == None:
+    if core.ctx["override_mod"] is None:
         core.ctx["override_mod"] = importlib.import_module(
             ".override.overrides", __package__
         )
@@ -74,7 +72,7 @@ def _eval(
         with open("safeEvalPy.log", "r") as fp:
             stdout += fp.read()
         os.remove("safeEvalPy.log")
-    except Exception as ex:
+    except Exception:
         pass
 
     return ret, stdout
