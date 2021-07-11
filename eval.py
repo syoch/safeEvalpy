@@ -28,6 +28,9 @@ def _eval(
     core.ctx["backup"]["stdout"] = sys.stdout
     sys.stdout = buf
 
+    core.ctx["backup"]["modules"] = sys.modules
+    sys.modules = {}
+
     if not __globals:
         __globals = {
             "__builtins__": builtins
@@ -60,6 +63,7 @@ def _eval(
         ret += f'  Detail: ({type(ex).__name__}) {ex}\n'
 
     sys.stdout = core.ctx["backup"]["stdout"]
+    sys.modules = core.ctx["backup"]["modules"]
     core.controller("%fnb")
     core.controller("%bnf")
     core.restore()
