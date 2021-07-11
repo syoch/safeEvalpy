@@ -30,7 +30,10 @@ def _eval(
 
     core.ctx["backup"]["modules"] = sys.modules
     sys.modules = {}
-
+    
+    core.ctx["backup"]["metapath"] = sys.meta_path
+    sys.meta_path = []
+    
     if not __globals:
         __globals = {
             "__builtins__": builtins
@@ -64,6 +67,7 @@ def _eval(
 
     sys.stdout = core.ctx["backup"]["stdout"]
     sys.modules = core.ctx["backup"]["modules"]
+    sys.meta_path = core.ctx["backup"]["metapath"]
     core.controller("%fnb")
     core.controller("%bnf")
     core.restore()
