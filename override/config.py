@@ -12,6 +12,7 @@ blocks = {
         "exit",
         "exec",
         "quit",
+        "bytearray"
     ]
 }
 blockedFunctions = {
