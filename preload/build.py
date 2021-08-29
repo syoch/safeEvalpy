@@ -56,7 +56,9 @@ for name, default, ret_type, *args_type in [
 
     ["system", "0", "int", "const char*"],
     ["kill", "-1", "int", "pid_t", "int"],  # os.kill
-    ["socket", "0", "int", "int", "int", "int"]  # socket.socket
+    ["socket", "0", "int", "int", "int", "int"],  # socket.socket
+
+    ["symlink", "0", "int", "const char *", "const char *"]
 ]:
     arg_type = ", ".join(args_type)
     namedargs = ", ".join([
