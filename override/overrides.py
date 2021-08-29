@@ -90,6 +90,6 @@ def __wrap__open(path, mode='r', *args):
         raise Exception("can't open "+basename+".")
 
     if path[0] == "%":
-        raise Exception("preload controll is blocked.")
+        raise Exception("preload control is blocked.")
 
     return open(path, mode, *args)
