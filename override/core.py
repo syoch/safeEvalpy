@@ -56,7 +56,7 @@ def apply() -> None:
 
     builtins.SystemExit = BlockedException
 
-    ctx["modules"] = sys.modules.copy()
+    ctx["modules"] = sys.modules
     sys.modules = {}
 
 
