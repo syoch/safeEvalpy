@@ -56,8 +56,8 @@ def apply() -> None:
 
     builtins.SystemExit = BlockedException
 
-	ctx["modules"] = sys.modules.copy()
-	sys.modules = {}
+    ctx["modules"] = sys.modules.copy()
+    sys.modules = {}
 
 
 def restore() -> None:
@@ -65,5 +65,5 @@ def restore() -> None:
     for funcname in config.blocks["builtinFuncs"]:
         setattr(builtins, funcname, ctx["backup"][funcname])
 
-	# Restore sys.module
-	sys.modules = ctx["modules"]
+    # Restore sys.module
+    sys.modules = ctx["modules"]
