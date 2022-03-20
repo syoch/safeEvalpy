@@ -1,1 +1,1 @@
-from . import block, config, core
+from .patches import apply, restore, context

@@ -16,11 +16,11 @@ def controller(code):
     return 0
 
 
-def apply_static_patches():
+def apply():
     controller("%bf token")
     controller("%fb")
 
 
-def restore_static_patches():
+def restore():
     controller("%fnb")
     controller("%bnf")

@@ -5,7 +5,7 @@ from . import static_patches
 enabled_patches = False
 
 
-def apply_patches():
+def apply():
     global enabled_patches
 
     if enabled_patches:
@@ -18,7 +18,7 @@ def apply_patches():
     enabled_patches = True
 
 
-def restore_patches():
+def restore():
     global enabled_patches
 
     if not enabled_patches:

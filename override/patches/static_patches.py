@@ -5,7 +5,7 @@ from .. import block
 from . import context
 
 
-def apply_static_patches():
+def apply():
     global context
 
     context.backups["stdout"] = sys.stdout
@@ -19,7 +19,7 @@ def apply_static_patches():
     builtins.SystemExit = block.BlockedException
 
 
-def restore_static_patches():
+def restore():
     sys.stdout = context.backups["stdout"]
     sys.modules = context.backups["modules"]
     sys.meta_path = context.backups["metapath"]

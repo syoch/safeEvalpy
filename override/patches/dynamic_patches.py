@@ -3,7 +3,7 @@ from .. import config, block
 import builtins
 
 
-def apply_dynamic_patches():
+def apply():
     for funcname in config.blocks["builtinFuncs"]:
         context.function_backups[funcname] = getattr(builtins, funcname)
         setattr(
@@ -14,6 +14,6 @@ def apply_dynamic_patches():
         )
 
 
-def restore_dynamic_patches():
+def restore():
     for funcname in config.blocks["builtinFuncs"]:
         setattr(builtins, funcname, context.function_backups[funcname])

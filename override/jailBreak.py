@@ -1,13 +1,13 @@
+from . import patches
+
 import importlib
 
 
 def jailbreak(func):
-    core = importlib.import_module(".core", __package__)
-
     def wrapped(*args, **kw):
-        core.restore()
+        patches.restore()
         ret = func(*args, **kw)
-        core.apply()
+        patches.apply()
         return ret
 
     return wrapped

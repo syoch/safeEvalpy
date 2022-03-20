@@ -4,23 +4,20 @@ import os
 from typing import Any, Tuple
 from .filter.listcomp import check as check_listcomp
 import timeout_decorator
-import io
-import sys
 
 
 # @timeout_decorator.timeout(5)
 def _eval(
     src: str, __globals={}, __locals={}
 ) -> Tuple[Any, str]:
-    core = importlib.import_module(".override.core", __package__)
-
-    core.apply()
+    from . import override
+    override.apply()
     try:
         check_listcomp(src)
 
         __globals.update({"__builtins__": builtins})
         __locals.update({
-            "buf": core.ctx["stdout"],
+            "buf": override.context.stdout,
             "__loader__": None,
             "__spec__": None
         })
@@ -41,9 +38,9 @@ def _eval(
 
         ret += f'  Detail: ({type(ex).__name__}) {ex}\n'
 
-    core.restore()
+    override.restore()
 
-    stdout = core.ctx["stdout"].getvalue()
+    stdout = override.context.stdout.getvalue()
 
     # read preload log
     # importlib.reload(os)  # for use os.remove
