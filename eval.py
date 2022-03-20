@@ -10,7 +10,7 @@ import sys
 
 @timeout_decorator.timeout(5)
 def _eval(
-    src: str, __globals=None, __locals=None
+    src: str, __globals={}, __locals={}
 ) -> Tuple[Any, str]:
     core = importlib.import_module(".override.core", __package__)
 
@@ -30,26 +30,25 @@ def _eval(
 
     core.ctx["backup"]["modules"] = sys.modules
     sys.modules = {}
-    
+
     core.ctx["backup"]["metapath"] = sys.meta_path
     sys.meta_path = []
-    
-    if not __globals:
-        __globals = {
-            "__builtins__": builtins
-        }
-    if not __locals:
-        __locals = {
-            "buf": buf,
-            "__loader__": None,
-            "__spec__": None
-        }
 
     core.apply()
     try:
         check_listcomp(src)
 
-        ret = eval(src, __globals, __locals)
+        ret = eval(
+            src,
+            __globals | {
+                "__builtins__": builtins
+            },
+            __locals | {
+                "buf": buf,
+                "__loader__": None,
+                "__spec__": None
+            }
+        )
     except BaseException as ex:
         ret = ""
         ret += 'Exception:\n'
