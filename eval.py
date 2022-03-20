@@ -7,11 +7,16 @@ import timeout_decorator
 import io
 import sys
 
+in_safeeval = False
 
 @timeout_decorator.timeout(5)
 def _eval(
     src: str, __globals=None, __locals=None
 ) -> Tuple[Any, str]:
+    if in_safeeval:
+        raise Exception("Context in safe eval() mode")
+
+    in_safeeval = True
     core = importlib.import_module(".override.core", __package__)
 
     if core.ctx["override_mod"] is None:
@@ -83,4 +88,5 @@ def _eval(
     except Exception:
         pass
 
+    in_safeeval = False
     return ret, stdout
