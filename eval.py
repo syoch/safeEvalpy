@@ -38,17 +38,14 @@ def _eval(
     try:
         check_listcomp(src)
 
-        ret = eval(
-            src,
-            __globals | {
-                "__builtins__": builtins
-            },
-            __locals | {
-                "buf": buf,
-                "__loader__": None,
-                "__spec__": None
-            }
-        )
+        __globals.update({"__builtins__": builtins})
+        __locals.update({
+            "buf": buf,
+            "__loader__": None,
+            "__spec__": None
+        })
+
+        ret = eval(src, __globals, __locals)
     except BaseException as ex:
         ret = ""
         ret += 'Exception:\n'
