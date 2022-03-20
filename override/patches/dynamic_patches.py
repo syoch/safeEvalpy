@@ -1,6 +1,7 @@
 from . import context
 from .. import config, block
 import builtins
+from .overrides import override_table
 
 
 def apply():
@@ -9,7 +10,7 @@ def apply():
         setattr(
             builtins,
             funcname,
-            context.overrides[funcname] if funcname in context.overrides
+            override_table[funcname] if funcname in override_table
             else block.block(funcname+"()")
         )
 
