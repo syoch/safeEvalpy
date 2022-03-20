@@ -25,10 +25,12 @@ def controller(code):
         func = ctx["backup"]["open"]
     else:
         func = open
+
     try:
         func(code, "r")
     except Exception as ex:
         pass
+
     return 0
 
 
@@ -38,6 +40,20 @@ class BlockedException(Exception):
 
 
 def apply() -> None:
+    controller("%bf token")
+    controller("%fb")
+
+    # stream override
+    buf = io.StringIO()
+    ctx["stdout"] = buf
+    ctx["backup"]["stdout"] = sys.stdout
+    sys.stdout = buf
+
+    ctx["backup"]["modules"] = sys.modules
+    sys.modules = {}
+
+    ctx["backup"]["metapath"] = sys.meta_path
+    sys.meta_path = []
 
     if ctx["override_mod"] == None:
         ctx["override_mod"] = importlib.import_module(
@@ -61,6 +77,13 @@ def apply() -> None:
 
 
 def restore() -> None:
+    sys.stdout = ctx["backup"]["stdout"]
+    sys.modules = ctx["backup"]["modules"]
+    sys.meta_path = ctx["backup"]["metapath"]
+
+    controller("%fnb")
+    controller("%bnf")
+
     # restore functions
     for funcname in config.blocks["builtinFuncs"]:
         setattr(builtins, funcname, ctx["backup"][funcname])
