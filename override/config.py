@@ -54,5 +54,7 @@ blockedModules = [
     "pip",
     "importlib", "imp",
     "socket", "urllib", "http",
-    "fileinput", "pathlib"
+    "fileinput", "pathlib",
+
+    "_socket", "shutil"
 ]
