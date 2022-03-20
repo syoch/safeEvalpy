@@ -7,16 +7,22 @@ import importlib
 import sys
 import io
 
-ctx = {
-    "stdout": io.StringIO,
-    "backup": {
-        "stdout": sys.stdout
-    },
-    "overrides": {
+ctx = {}
 
-    },
-    "override_mod": None
-}
+
+def init_ctx():
+    global ctx
+    ctx = {
+        "stdout": io.StringIO,
+        "backup": {
+            "stdout": sys.stdout
+        },
+        "function_backups": {},
+        "overrides": {
+
+        },
+        "enabled": False
+    }
 
 
 def controller(code):
@@ -34,12 +40,26 @@ def controller(code):
     return 0
 
 
-class BlockedException(Exception):
-    def __init__(self, *args: object) -> None:
-        raise Exception("blocked")
+def print_(x):
+    if ctx["enabled"]:
+        ctx["backup"]["stdout"].write(str(x)+"\n")
+    else:
+        print(x)
+    return x
 
 
 def apply() -> None:
+    if ctx == {}:
+        init_ctx()
+
+    print_(f"apply {ctx['enabled']=}")
+    if ctx["enabled"]:
+        raise Exception("already applied")
+
+    init_ctx()
+
+    ctx["enabled"] = True
+
     controller("%bf token")
     controller("%fb")
 
@@ -55,14 +75,9 @@ def apply() -> None:
     ctx["backup"]["metapath"] = sys.meta_path
     sys.meta_path = []
 
-    if ctx["override_mod"] == None:
-        ctx["override_mod"] = importlib.import_module(
-            ".overrides", __package__
-        )
-
     # Function Override
     for funcname in config.blocks["builtinFuncs"]:
-        ctx["backup"][funcname] = getattr(builtins, funcname)
+        ctx["function_backups"][funcname] = getattr(builtins, funcname)
         setattr(
             builtins,
             funcname,
@@ -70,13 +85,20 @@ def apply() -> None:
             else block.block(funcname+"()")
         )
 
-    builtins.SystemExit = BlockedException
+    ctx["backup"]["SystemExit"] = builtins.SystemExit
+    builtins.SystemExit = block.BlockedException
 
     ctx["modules"] = sys.modules
     sys.modules = {}
 
 
 def restore() -> None:
+    print_(f"restore {ctx['enabled']=}")
+    if not ctx["enabled"]:
+        raise Exception("not applied")
+
+    ctx["enabled"] = False
+
     sys.stdout = ctx["backup"]["stdout"]
     sys.modules = ctx["backup"]["modules"]
     sys.meta_path = ctx["backup"]["metapath"]
@@ -86,7 +108,10 @@ def restore() -> None:
 
     # restore functions
     for funcname in config.blocks["builtinFuncs"]:
-        setattr(builtins, funcname, ctx["backup"][funcname])
+        setattr(builtins, funcname, ctx["function_backups"][funcname])
+
+    # Restore SystemExit
+    builtins.SystemExit = ctx["backup"]["SystemExit"]
 
     # Restore sys.module
     sys.modules = ctx["modules"]

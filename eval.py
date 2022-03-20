@@ -8,31 +8,11 @@ import io
 import sys
 
 
-@timeout_decorator.timeout(5)
+# @timeout_decorator.timeout(5)
 def _eval(
     src: str, __globals={}, __locals={}
 ) -> Tuple[Any, str]:
     core = importlib.import_module(".override.core", __package__)
-
-    if core.ctx["override_mod"] is None:
-        core.ctx["override_mod"] = importlib.import_module(
-            ".override.overrides", __package__
-        )
-
-    core.controller("%bf token")
-    core.controller("%fb")
-
-    # stream override
-    buf = io.StringIO()
-    core.ctx["stdout"] = buf
-    core.ctx["backup"]["stdout"] = sys.stdout
-    sys.stdout = buf
-
-    core.ctx["backup"]["modules"] = sys.modules
-    sys.modules = {}
-
-    core.ctx["backup"]["metapath"] = sys.meta_path
-    sys.meta_path = []
 
     core.apply()
     try:
@@ -40,7 +20,7 @@ def _eval(
 
         __globals.update({"__builtins__": builtins})
         __locals.update({
-            "buf": buf,
+            "buf": core.ctx["stdout"],
             "__loader__": None,
             "__spec__": None
         })
@@ -61,11 +41,6 @@ def _eval(
 
         ret += f'  Detail: ({type(ex).__name__}) {ex}\n'
 
-    sys.stdout = core.ctx["backup"]["stdout"]
-    sys.modules = core.ctx["backup"]["modules"]
-    sys.meta_path = core.ctx["backup"]["metapath"]
-    core.controller("%fnb")
-    core.controller("%bnf")
     core.restore()
 
     stdout = core.ctx["stdout"].getvalue()
