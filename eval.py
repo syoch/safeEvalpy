@@ -13,6 +13,7 @@ in_safeeval = False
 def _eval(
     src: str, __globals=None, __locals=None
 ) -> Tuple[Any, str]:
+    global in_safeeval
     if in_safeeval:
         raise Exception("Context in safe eval() mode")
 
