@@ -8,7 +8,7 @@ from .exception_formatter import format as exception_format
 
 from .filtering import check as check_listcomp
 
-from . import switcher
+from .switcher import switcher
 from . import context
 
 

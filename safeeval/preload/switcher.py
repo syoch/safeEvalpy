@@ -1,14 +1,9 @@
-from .context import function_backups
-from . import patcher_factory
-
-patcher = patcher_factory.Patcher()
+from .patcher import patcher
 
 _open = open
 
 
 def controller(code):
-    func = None
-
     try:
         _open(code, "r")
     except Exception:

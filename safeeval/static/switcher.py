@@ -1,9 +1,9 @@
 
 import sys
 import builtins
-from . import block
-from . import patcher_factory
-from . import context
+from .. import block
+from .. import patcher_factory
+from .. import context
 
 patcher = patcher_factory.Patcher()
 

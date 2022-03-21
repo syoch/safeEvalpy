@@ -1,11 +1,9 @@
 from . import config
-from .. import block, context
+from .. import block
 import builtins
 from .overrides import override_table
-from ..patcher_factory import Patcher
 from ..jailBreak import jailbreak
-
-patcher = Patcher()
+from .patcher import patcher
 
 
 @patcher.apply
