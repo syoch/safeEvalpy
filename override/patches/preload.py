@@ -10,10 +10,14 @@ def controller(code):
 
     try:
         func(code, "r")
-    except Exception as ex:
+    except Exception:
         pass
 
     return 0
+
+
+def debug(x):
+    controller(f"%dbg {str(x)}")
 
 
 def apply():

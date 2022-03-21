@@ -1,6 +1,6 @@
-from . import dynamic_patches
-from . import preload_patches
-from . import static_patches
+from . import dynamic
+from . import preload
+from . import static
 
 enabled_patches = False
 
@@ -11,9 +11,9 @@ def apply():
     if enabled_patches:
         raise Exception("already applied")
 
-    preload_patches.apply()
-    static_patches.apply()
-    dynamic_patches.apply()
+    preload.apply()
+    static.apply()
+    dynamic.apply()
 
     enabled_patches = True
 
@@ -24,8 +24,8 @@ def restore():
     if not enabled_patches:
         raise Exception("not applied")
 
-    dynamic_patches.restore()
-    static_patches.restore()
-    preload_patches.restore()
+    static.restore()
+    dynamic.restore()
+    preload.restore()
 
     enabled_patches = False

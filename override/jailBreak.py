@@ -1,7 +1,5 @@
 from . import patches
 
-import importlib
-
 
 def jailbreak(func):
     def wrapped(*args, **kw):

@@ -1,9 +1,9 @@
 import builtins
-import importlib
-import os
 from typing import Any, Tuple
 from .filter.listcomp import check as check_listcomp
-import timeout_decorator
+from .exception_formatter import format as exception_format
+import io
+import os
 
 
 # @timeout_decorator.timeout(5)
@@ -12,6 +12,7 @@ def _eval(
 ) -> Tuple[Any, str]:
     from . import override
     override.apply()
+    override.context.stdout = io.StringIO()
     try:
         check_listcomp(src)
 
@@ -24,26 +25,15 @@ def _eval(
 
         ret = eval(src, __globals, __locals)
     except BaseException as ex:
-        ret = ""
-        ret += 'Exception:\n'
+        if override.patches.enabled_patches:
+            override.restore()
+        ret = exception_format(ex)
 
-        tb = ex.__traceback__
-        while tb:
-            ret += '  in %s:%d (%s)\n' % (
-                tb.tb_frame.f_code.co_filename.replace(os.getcwd(), "."),
-                tb.tb_lineno,
-                tb.tb_frame.f_code.co_name
-            )
-            tb = tb.tb_next
-
-        ret += f'  Detail: ({type(ex).__name__}) {ex}\n'
-
-    override.restore()
+    if override.patches.enabled_patches:
+        override.restore()
 
     stdout = override.context.stdout.getvalue()
 
-    # read preload log
-    # importlib.reload(os)  # for use os.remove
     try:
         with open("safeEvalPy.log", "r") as fp:
             stdout += fp.read()

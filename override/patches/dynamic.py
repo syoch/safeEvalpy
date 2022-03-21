@@ -18,3 +18,7 @@ def apply():
 def restore():
     for funcname in config.blocks["builtinFuncs"]:
         setattr(builtins, funcname, context.function_backups[funcname])
+
+    import importlib
+    for module_name in config.blockedFunctions:
+        importlib.reload(context.function_backups["__import__"](module_name))

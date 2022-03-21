@@ -7,25 +7,24 @@ from .. import block
 from .. import config
 from ..jailBreak import jailbreak
 
+from . import preload as preload
+
 override_table = {}
 
 
-def override(original):
-    funcname = original.__name__
+def override(func):
+    funcname = func.__name__
 
-    def coro(func):
-        override_table[funcname] = func
+    if not funcname.startswith("wrap_"):
+        raise Exception("override() must be used on wrap_* functions")
 
-        def wrap(*args, **kw):
-            return func(original, *args, **kw)
+    funcname = funcname[5:]
 
-        return wrap
-    return coro
+    override_table[funcname] = jailbreak(func)
 
 
-@override(__import__)
-@jailbreak
-def __import__(original, name, *args, **kwargs):
+@override
+def wrap___import__(name, *args, **kwargs):
     basename = name.split(".")[0]
     if basename.startswith("."):
         raise block.Block("relative import is blocked.")
@@ -33,7 +32,7 @@ def __import__(original, name, *args, **kwargs):
     if basename in blockedModules:
         raise block.Block(f"Module {basename} is blocked.")
     else:
-        obj = original(name, *args, **kwargs)
+        obj = __import__(name, *args, **kwargs)
 
     if basename in blockedFunctions:
         for funcnames in blockedFunctions[basename]:
@@ -59,22 +58,22 @@ def __import__(original, name, *args, **kwargs):
     return obj
 
 
-@override(iter)
-def iter(original, objects, sentinel=None):
+@override
+def wrap_iter(objects, sentinel=None):
     if type(objects) == type(lambda: 0):
         if objects() != sentinel:
             raise Exception("iter attack has detected!")
-    return original(objects, sentinel=sentinel)
+    return iter(objects, sentinel=sentinel)
 
 
-@override(print)
-def print(original, *objects, sep=' ', end='\n', file=None, flush=False):
-    original(*objects, sep=sep, end=end,
-             file=file, flush=False)
+@override
+def wrap_print(*objects, sep=' ', end='\n', file=None, flush=False):
+    print(*objects, sep=sep, end=end,
+          file=file, flush=False)
 
 
-@override(range)
-def range(original, a=0, b=0, c=1):
+@override
+def wrap_range(a=0, b=0, c=1):
     start = 0
     end = 0
     step = c
@@ -86,12 +85,12 @@ def range(original, a=0, b=0, c=1):
         end = b
     if end > 10**10:
         end = 100
-    ret = original(start, end, step)
+    ret = range(start, end, step)
     return ret
 
 
-@override(open)
-def open(original, path, mode='r', *args):
+@override
+def wrap_open(path, mode='r', *args):
     if "w" in mode or "a" in mode or "x" in mode:
         raise Exception("can't open file in write mode")
 
@@ -102,4 +101,4 @@ def open(original, path, mode='r', *args):
     if path[0] == "%":
         raise Exception("preload control is blocked.")
 
-    return original(path, mode, *args)
+    return open(path, mode, *args)
