@@ -5,8 +5,11 @@ from .exception_formatter import format as exception_format
 import io
 import os
 
+in_safeeval = False
 
 # @timeout_decorator.timeout(5)
+
+
 def _eval(
     src: str, __globals={}, __locals={}
 ) -> Tuple[Any, str]:
@@ -41,4 +44,5 @@ def _eval(
     except Exception:
         pass
 
+    in_safeeval = False
     return ret, stdout
