@@ -16,6 +16,7 @@ def _eval(
     from . import override
     override.apply()
     override.context.stdout = io.StringIO()
+
     try:
         check_listcomp(src)
 
@@ -28,12 +29,13 @@ def _eval(
 
         ret = eval(src, __globals, __locals)
     except BaseException as ex:
+        try:
+            ret = exception_format(ex)
+        except BaseException:
+            ret = "Exception: Unformattable exception"
+    finally:
         if override.patches.enabled_patches:
             override.restore()
-        ret = exception_format(ex)
-
-    if override.patches.enabled_patches:
-        override.restore()
 
     stdout = override.context.stdout.getvalue()
 
@@ -44,5 +46,4 @@ def _eval(
     except Exception:
         pass
 
-    in_safeeval = False
     return ret, stdout

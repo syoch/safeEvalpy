@@ -1,12 +1,6 @@
 import os
 
-
-def getcwd():
-    from .override.patches import enabled_patches, context
-    if enabled_patches:
-        return context.function_backups["__import__"]("os").getcwd()
-
-    return os.getcwd()
+base_path = os.getcwd()
 
 
 def format(ex):
@@ -16,7 +10,7 @@ def format(ex):
 
     while tb:
         ret += '  in %s:%d (%s)\n' % (
-            tb.tb_frame.f_code.co_filename.replace(getcwd(), "."),
+            tb.tb_frame.f_code.co_filename.replace(base_path, "."),
             tb.tb_lineno,
             tb.tb_frame.f_code.co_name
         )
