@@ -45,7 +45,7 @@ def wrap___import__(name, *args, **kwargs):
             )
 
     if basename.replace("_", "") == "io":
-        obj.open = open
+        obj.open = override_table["open"]
 
         def open_code(path: str):
             if path.split("/")[-1] in config.blocks["file"]:
