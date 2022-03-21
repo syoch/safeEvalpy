@@ -3,7 +3,7 @@ import os
 base_path = os.getcwd()
 
 
-def format(ex):
+def _format(ex):
     tb = ex.__traceback__
 
     ret = 'Exception:\n'
@@ -19,3 +19,10 @@ def format(ex):
     ret += f'  Detail: ({type(ex).__name__ if ex else ""}) {ex}\n'
 
     return ret
+
+
+def format(ex):
+    try:
+        return _format(ex)
+    except Exception:
+        return "Exception: Unformattable exception"

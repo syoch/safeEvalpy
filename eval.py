@@ -29,10 +29,7 @@ def _eval(
 
         ret = eval(src, __globals, __locals)
     except BaseException as ex:
-        try:
-            ret = exception_format(ex)
-        except BaseException:
-            ret = "Exception: Unformattable exception"
+        ret = exception_format(ex)
     finally:
         if override.patches.enabled_patches:
             override.restore()
