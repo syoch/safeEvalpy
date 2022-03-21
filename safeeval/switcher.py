@@ -1,3 +1,4 @@
+import sys
 from .dynamic import patcher as dynamic
 from .preload import patcher as preload
 from .static import patcher as static
@@ -9,8 +10,9 @@ patcher = Patcher()
 @patcher.apply
 def apply():
     preload.do_apply()
-    static.do_apply()
+    # static.do_apply()
     dynamic.do_apply()
+    print("Patched", file=sys.stdout)
 
     return None
 
@@ -18,5 +20,5 @@ def apply():
 @patcher.restore
 def restore(_):
     preload.do_restore()
-    static.do_restore()
+    # static.do_restore()
     dynamic.do_restore()

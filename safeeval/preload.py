@@ -3,16 +3,14 @@ from . import patcher_factory
 
 patcher = patcher_factory.Patcher()
 
+_open = open
+
 
 def controller(code):
     func = None
-    if "open" in function_backups:
-        func = function_backups["open"]
-    else:
-        func = open
 
     try:
-        func(code, "r")
+        _open(code, "r")
     except Exception:
         pass
 

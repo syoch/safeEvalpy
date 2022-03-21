@@ -26,13 +26,13 @@ def wrap___import__(name, *args, **kwargs):
     if "eval" in name:
         raise block.Block("the module name which contains eval is blocked.")
 
-    if basename in config.blockedModules:
+    if basename in config.module_block:
         raise block.Block(f"Module {basename} is blocked.")
     else:
         obj = __import__(name, *args, **kwargs)
 
-    if basename in config.blockedFunctions:
-        for funcnames in config.blockedFunctions[basename]:
+    if basename in config.module_block:
+        for funcnames in config.module_block[basename]:
             setattr(
                 obj, funcnames,
                 block.block(basename+"."+funcnames+"()")

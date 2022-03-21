@@ -3,7 +3,7 @@ from .. import block, context
 import builtins
 from .overrides import override_table
 from ..patcher_factory import Patcher
-
+from ..jailBreak import jailbreak
 
 patcher = Patcher()
 
@@ -16,7 +16,7 @@ def apply():
         setattr(
             builtins,
             funcname,
-            override_table[funcname] if funcname in override_table
+            jailbreak(override_table[funcname]) if funcname in override_table
             else block.block(funcname+"()")
         )
 
