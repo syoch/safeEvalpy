@@ -1,10 +1,13 @@
-from . import context
+from .context import function_backups
+from . import patcher_factory
+
+patcher = patcher_factory.Patcher()
 
 
 def controller(code):
     func = None
-    if "open" in context.function_backups:
-        func = context.function_backups["open"]
+    if "open" in function_backups:
+        func = function_backups["open"]
     else:
         func = open
 
@@ -16,15 +19,15 @@ def controller(code):
     return 0
 
 
-def debug(x):
-    controller(f"%dbg {str(x)}")
-
-
+@patcher.apply
 def apply():
     controller("%bf .env")
     controller("%fb")
 
+    return None
 
-def restore():
+
+@patcher.restore
+def restore(_):
     controller("%fnb")
     controller("%bnf")

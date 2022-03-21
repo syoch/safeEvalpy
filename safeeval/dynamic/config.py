@@ -1,21 +1,19 @@
-blocks = {
-    "file": ["main.py", "token", ],
-    "builtinFuncs": [
-        "__import__",
-        "range",
-        "print",
-        "open",
-        "iter",
-        "globals",
-        "locals",
-        "input",
-        "exit",
-        "exec",
-        "quit",
-        "bytearray"
-    ]
-}
-blockedFunctions = {
+blocked_files = ["main.py", "token"]
+builtin_functions_overrides = [
+    "__import__",
+    "range",
+    "print",
+    "open",
+    "iter",
+    "globals",
+    "locals",
+    "input",
+    "exit",
+    "exec",
+    "quit",
+    "bytearray"
+]
+module_block = {
     "sys": ["exit"],
     "os": [
         "system",
@@ -46,15 +44,18 @@ blockedFunctions = {
     "tokenize": ["open", "_builtin_open"],
     "pty": ["fork"],
     "threading": ["_after_fork"],
-    "tempfile": ["mkdtemp", "mktemp", "mkstemp"]  # blocked by preload
+    "tempfile": ["mkdtemp", "mktemp", "mkstemp"],  # blocked by preload
+    "subprocess": [...],
+    "ctypes": [...],
+    "signal": [...],
+    "pip": [...],
+    "importlib": [...],
+    "imp": [...],
+    "socket": [...],
+    "urllib": [...],
+    "http": [...],
+    "fileinput": [...],
+    "pathlib": [...],
+    "_socket": [...],
+    "dotenv": [...]
 }
-blockedModules = [
-    "subprocess", "pty",
-    "ctypes", "signal",
-    "pip",
-    "importlib", "imp",
-    "socket", "urllib", "http",
-    "fileinput", "pathlib",
-
-    "_socket", "shutil"
-]

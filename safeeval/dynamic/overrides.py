@@ -1,13 +1,7 @@
-import importlib
 import pathlib
 
-from anyio import fail_after
-from ..config import blockedModules, blockedFunctions
 from .. import block
-from .. import config
-from ..jailBreak import jailbreak
-
-from . import preload as preload
+from . import config
 
 override_table = {}
 
@@ -20,7 +14,7 @@ def override(func):
 
     funcname = funcname[5:]
 
-    override_table[funcname] = jailbreak(func)
+    override_table[funcname] = func
 
 
 @override
@@ -32,13 +26,13 @@ def wrap___import__(name, *args, **kwargs):
     if "eval" in name:
         raise block.Block("the module name which contains eval is blocked.")
 
-    if basename in blockedModules:
+    if basename in config.blockedModules:
         raise block.Block(f"Module {basename} is blocked.")
     else:
         obj = __import__(name, *args, **kwargs)
 
-    if basename in blockedFunctions:
-        for funcnames in blockedFunctions[basename]:
+    if basename in config.blockedFunctions:
+        for funcnames in config.blockedFunctions[basename]:
             setattr(
                 obj, funcnames,
                 block.block(basename+"."+funcnames+"()")

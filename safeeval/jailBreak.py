@@ -1,11 +1,12 @@
-from . import patches
 
 
 def jailbreak(func):
+    from .switcher import patcher
+
     def wrapped(*args, **kw):
-        patches.restore()
+        patcher.do_restore()
         ret = func(*args, **kw)
-        patches.apply()
+        patcher.do_apply()
         return ret
 
     return wrapped

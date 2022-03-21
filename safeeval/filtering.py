@@ -1,8 +1,6 @@
 import ast
-from ..override.jailBreak import jailbreak
 
 
-@jailbreak
 def check(src: str) -> None:
     for node in ast.walk(ast.parse(src)):
         if type(node) != ast.ListComp:
