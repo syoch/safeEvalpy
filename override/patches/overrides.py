@@ -26,8 +26,11 @@ def override(func):
 @override
 def wrap___import__(name, *args, **kwargs):
     basename = name.split(".")[0]
-    if basename.startswith("."):
+    if basename.startswith(".") or basename.startswith("libs"):
         raise block.Block("relative import is blocked.")
+
+    if "eval" in name:
+        raise block.Block("the module name which contains eval is blocked.")
 
     if basename in blockedModules:
         raise block.Block(f"Module {basename} is blocked.")
