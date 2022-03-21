@@ -4,12 +4,12 @@ from .filter.listcomp import check as check_listcomp
 from .exception_formatter import format as exception_format
 import io
 import os
+import timeout_decorator
 
 in_safeeval = False
 
-# @timeout_decorator.timeout(5)
 
-
+@timeout_decorator.timeout(5)
 def _eval(
     src: str, __globals={}, __locals={}
 ) -> Tuple[Any, str]:
