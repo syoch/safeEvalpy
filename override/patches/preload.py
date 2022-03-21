@@ -21,7 +21,7 @@ def debug(x):
 
 
 def apply():
-    controller("%bf token")
+    controller("%bf .env")
     controller("%fb")
 
 
