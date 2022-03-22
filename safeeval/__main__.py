@@ -8,7 +8,7 @@ while True:
     if src == ".exit":
         break
 
-    ret, out = _eval.eval(src)
+    ret, out = _eval(src)
     print(ret)
     print("---")
     print(out)
