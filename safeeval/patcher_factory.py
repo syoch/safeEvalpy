@@ -55,5 +55,6 @@ class Patcher():
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        self.do_restore()
+        if exc_type is None:
+            self.do_restore()
         return False
