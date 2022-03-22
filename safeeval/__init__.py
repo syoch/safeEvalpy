@@ -25,7 +25,8 @@ def _eval(
         __locals.update({
             "buf": context.stdout,
             "__loader__": None,
-            "__spec__": None
+            "__spec__": None,
+            "__builtins__": None
         })
 
         with switcher.patcher:

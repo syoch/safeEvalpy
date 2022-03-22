@@ -1,4 +1,4 @@
-blocked_files = ["main.py", "token"]
+blocked_files = ["main.py", "token", ".env"]
 builtin_functions_overrides = [
     "__import__",
     "range",

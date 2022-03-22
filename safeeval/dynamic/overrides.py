@@ -93,7 +93,7 @@ def wrap_open(path, mode='r', *args):
 
     basename = pathlib.Path(path).name
     if basename in config.blocked_files:
-        raise Exception("can't open "+basename+".")
+        raise Exception(f"can't open {basename} in protected mode.")
 
     if path[0] == "%":
         raise Exception("preload control is blocked.")
