@@ -92,7 +92,7 @@ def wrap_open(path, mode='r', *args):
         raise Exception("can't open file in write mode")
 
     basename = pathlib.Path(path).name
-    if basename in config.blocks["file"]:
+    if basename in config.blocked_files:
         raise Exception("can't open "+basename+".")
 
     if path[0] == "%":
