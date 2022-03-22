@@ -30,10 +30,8 @@ extern "C" void writelog(const char *fmt, ...) {
 }
 extern "C" bool processcmd(const char *cmd) {
   if (!strcmp(cmd, "%fb")) {
-    puts("Disabling Guards");
     fork_enabled = false;
   } else if (!strcmp(cmd, "%fnb")) {
-    puts("Enabling Guards");
     fork_enabled = true;
   } else if (!strncmp(cmd, "%bf ", 3)) {
     auto target = cmd + 4;
