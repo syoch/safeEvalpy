@@ -1,9 +1,6 @@
 from typing import Any
 
 
-_print = print
-
-
 def disabled_function(*a, **kw):
     raise Exception("Disabled function")
 
@@ -33,8 +30,6 @@ class Patcher():
         if not self.apply_function:
             raise Exception("No apply function")
 
-        _print("[+]", self.apply_function.__module__)
-
         if self.patched:
             raise Exception("Already patched")
 
@@ -46,8 +41,6 @@ class Patcher():
     def do_restore(self):
         if not self.restore_function:
             raise Exception("No restore function")
-
-        _print("[-]", self.restore_function.__module__)
 
         if not self.patched:
             raise Exception("Not patched")
