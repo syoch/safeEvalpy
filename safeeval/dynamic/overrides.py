@@ -26,7 +26,7 @@ def wrap___import__(name, *args, **kwargs):
     if "eval" in name:
         raise block.Block("the module name which contains eval is blocked.")
 
-    if basename in config.module_block:
+    if basename in config.module_block and config.module_block[basename][0] == ...:
         raise block.Block(f"Module {basename} is blocked.")
     else:
         obj = __import__(name, *args, **kwargs)
