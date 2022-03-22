@@ -11,7 +11,8 @@ builtin_functions_overrides = [
     "exit",
     "exec",
     "quit",
-    "bytearray"
+    "bytearray",
+    "license"
 ]
 module_block = {
     "sys": ["exit"],
