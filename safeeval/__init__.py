@@ -12,7 +12,7 @@ from .switcher import switcher
 from . import context
 
 
-# @timeout_decorator.timeout(5)
+@timeout_decorator.timeout(5)
 def _eval(
     src: str, __globals={}, __locals={}
 ) -> Tuple[Any, str]:
