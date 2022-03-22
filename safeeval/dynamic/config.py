@@ -57,5 +57,6 @@ module_block = {
     "fileinput": [...],
     "pathlib": [...],
     "_socket": [...],
-    "dotenv": [...]
+    "dotenv": [...],
+    "builtins": [...]
 }
