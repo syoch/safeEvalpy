@@ -1,4 +1,4 @@
-from ..dynamic import patcher as dynamic
+from ..dynamic.switcher import patcher as dynamic
 from ..preload.switcher import patcher as preload
 from ..static.switcher import patcher as static
 from .patcher import patcher

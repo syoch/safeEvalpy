@@ -30,10 +30,10 @@ class Patcher():
     def do_apply(self):
         global enabled_patches
 
-        _print("Applying", self.apply_function.__module__)
-
         if not self.apply_function:
             raise Exception("No apply function")
+
+        _print("[+]", self.apply_function.__module__)
 
         if self.patched:
             raise Exception("Already patched")
@@ -44,9 +44,10 @@ class Patcher():
         enabled_patches.append(self)
 
     def do_restore(self):
-        _print("Restoring", self.restore_function.__module__)
         if not self.restore_function:
             raise Exception("No restore function")
+
+        _print("[-]", self.restore_function.__module__)
 
         if not self.patched:
             raise Exception("Not patched")
