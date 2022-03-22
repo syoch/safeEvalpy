@@ -59,5 +59,6 @@ module_block = {
     "pathlib": [...],
     "_socket": [...],
     "dotenv": [...],
-    "builtins": [...]
+    "builtins": [...],
+    "pickle": [...],
 }
