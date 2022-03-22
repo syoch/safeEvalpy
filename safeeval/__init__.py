@@ -39,7 +39,7 @@ def _eval(
     try:
         with open("safeEvalPy.log", "r") as fp:
             stdout += fp.read()
-        __import__("os").remove("safeEvalPy.log")
+        os.remove("safeEvalPy.log")
     except Exception:
         pass
 

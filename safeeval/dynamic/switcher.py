@@ -26,7 +26,3 @@ def apply():
 def restore(table):
     for funcname in config.builtin_functions_overrides:
         setattr(builtins, funcname, table[funcname])
-
-    import importlib
-    for module_name in config.module_block:
-        importlib.reload(table["__import__"](module_name))
