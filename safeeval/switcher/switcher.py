@@ -7,7 +7,7 @@ from .patcher import patcher
 @patcher.apply
 def apply():
     preload.do_apply()
-    # static.do_apply()
+    static.do_apply()
     dynamic.do_apply()
 
     return None
@@ -16,5 +16,5 @@ def apply():
 @patcher.restore
 def restore(_):
     preload.do_restore()
-    # static.do_restore()
+    static.do_restore()
     dynamic.do_restore()
