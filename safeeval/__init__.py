@@ -32,7 +32,8 @@ def _eval(
         with switcher.patcher:
             ret = eval(src, __globals, __locals)
     except BaseException as ex:
-        ret = exception_format(ex)
+        with switcher.patcher:
+            ret = exception_format(ex)
 
     stdout = context.stdout.getvalue()
 

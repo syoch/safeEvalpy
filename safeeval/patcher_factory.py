@@ -7,6 +7,8 @@ def disabled_function(*a, **kw):
 
 enabled_patches = []
 
+_p = print
+
 
 class Patcher():
     def __init__(self):
@@ -29,7 +31,6 @@ class Patcher():
 
         if not self.apply_function:
             raise Exception("No apply function")
-
         if self.patched:
             raise Exception("Already patched")
 
@@ -41,7 +42,6 @@ class Patcher():
     def do_restore(self):
         if not self.restore_function:
             raise Exception("No restore function")
-
         if not self.patched:
             raise Exception("Not patched")
 
@@ -55,6 +55,5 @@ class Patcher():
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        if exc_type is None:
-            self.do_restore()
+        self.do_restore()
         return False
