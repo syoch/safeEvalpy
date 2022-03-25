@@ -2,7 +2,7 @@ from . import config
 from .. import block
 import builtins
 from .overrides import override_table
-from ..jailBreak import jailbreak
+from ..jailbreak import JailBreak
 from .patcher import patcher
 
 
@@ -13,7 +13,7 @@ def apply():
         table[funcname] = getattr(builtins, funcname)
 
         if funcname in override_table:
-            func = jailbreak(override_table[funcname])
+            func = JailBreak(funcname)(override_table[funcname])
         else:
             func = block.block(funcname+"()")
 
