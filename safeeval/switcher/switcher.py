@@ -8,22 +8,18 @@ from .. import log
 
 @patcher.apply
 def apply():
-    # begin_block("Safeeval", "All")
+    log.begin_block("Safeeval")
 
-    with log.Block("Safeeval", "All", "Apply"):
-        preload.do_apply()
-        static.do_apply()
-        log.log("Applying dynamic patch")
-        dynamic.do_apply()
+    preload.do_apply()
+    static.do_apply()
+    dynamic.do_apply()
     return None
 
 
 @patcher.restore
 def restore(_):
-    with log.Block("Safeeval", "All", "Restore"):
-        preload.do_restore()
-        static.do_restore()
-        log.log("Restoreing dynamic patch")
-        dynamic.do_restore()
+    preload.do_restore()
+    static.do_restore()
+    dynamic.do_restore()
 
-    # end_block()
+    log.end_block()
