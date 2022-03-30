@@ -2,9 +2,9 @@ import io
 
 
 indent = 0
-_p = print
+do_logging = False
 
-stack = []
+_p = print
 
 
 def format(*args, **kwargs):
@@ -15,6 +15,10 @@ def format(*args, **kwargs):
 
 def log(*args, **kwargs):
     global indent
+
+    if not do_logging:
+        return
+
     _p("| "*indent+format(*args, **kwargs))
 
 
@@ -40,3 +44,8 @@ class Block:
     def __exit__(self, *args):
         end_block()
         return False
+
+
+def set_do_logging(f: bool) -> None:
+    global do_logging
+    do_logging = f
