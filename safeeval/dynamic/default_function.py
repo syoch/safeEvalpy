@@ -5,7 +5,7 @@ def backup_default_function(name, func):
     table[name] = func
 
 
-def backup_default_functions(dic: dict[str, callable]):
+def backup_default_functions(dic: dict):
     for name, func in dic.items():
         backup_default_function(name, func)
 
