@@ -1,13 +1,10 @@
 blocked_files = ["main.py", "token", ".env"]
-builtin_functions_overrides = [
-    "__import__",
-    "range",
-    "print",
-    "open",
-    "iter",
+blocked_functions = [
     "globals",
     "locals",
+
     "input",
+
     "exit",
     "exec",
     "quit",

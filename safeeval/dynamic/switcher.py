@@ -9,20 +9,20 @@ from .patcher import patcher
 @patcher.apply
 def apply():
     table = {}
-    for funcname in config.builtin_functions_overrides:
-        table[funcname] = getattr(builtins, funcname)
+    for name in config.blocked_functions:
+        table[name] = getattr(builtins, name)
+        func = block.block(name+"()")
+        setattr(builtins, name, func)
 
-        if funcname in override_table:
-            func = JailBreak(funcname)(override_table[funcname])
-        else:
-            func = block.block(funcname+"()")
-
-        setattr(builtins, funcname, func)
+    for name in override_table:
+        table[name] = getattr(builtins, name)
+        func = JailBreak(name)(override_table[name])
+        setattr(builtins, name, func)
 
     return table
 
 
 @patcher.restore
 def restore(table):
-    for funcname in config.builtin_functions_overrides:
-        setattr(builtins, funcname, table[funcname])
+    for name in table:
+        setattr(builtins, name, table[name])
