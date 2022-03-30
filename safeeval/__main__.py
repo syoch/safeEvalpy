@@ -1,4 +1,6 @@
-from . import _eval
+from . import _eval, set_do_logging
+
+set_do_logging(True)
 
 print(".exit for exit")
 
