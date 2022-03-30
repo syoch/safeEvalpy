@@ -2,7 +2,6 @@ from . import config
 from .. import block
 import builtins
 from .overrides import override_table
-from ..jailbreak import JailBreak
 from .patcher import patcher
 
 
@@ -16,7 +15,7 @@ def apply():
 
     for name in override_table:
         table[name] = getattr(builtins, name)
-        func = JailBreak(name)(override_table[name])
+        func = override_table[name]
         setattr(builtins, name, func)
 
     return table
