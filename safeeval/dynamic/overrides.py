@@ -3,6 +3,7 @@ import pathlib
 from .. import block
 from . import config
 from .. import context
+from . import default_function
 
 override_table = {}
 
@@ -30,7 +31,8 @@ def wrap___import__(name, *args, **kwargs):
     if basename in config.module_block and config.module_block[basename][0] == ...:
         raise block.Block(f"Module {basename} is blocked.")
     else:
-        obj = __import__(name, *args, **kwargs)
+        obj = default_function.get_default_function(
+            "__import__")(name, *args, **kwargs)
 
     if basename in config.module_block:
         for funcnames in config.module_block[basename]:
@@ -61,13 +63,14 @@ def wrap_iter(objects, sentinel=None):
     if type(objects) == type(lambda: 0):
         if objects() != sentinel:
             raise Exception("iter attack has detected!")
-    return iter(objects, sentinel=sentinel)
+
+    return default_function.get_default_function("iter")(objects, sentinel=sentinel)
 
 
 @override
 def wrap_print(*objects, sep=' ', end='\n', file=None, flush=False):
-    print(*objects, sep=sep, end=end,
-          file=context.stdout, flush=False)
+    default_function.get_default_function("print")(*objects, sep=sep, end=end,
+                                                   file=context.stdout, flush=False)
 
 
 @override
@@ -83,7 +86,7 @@ def wrap_range(a=0, b=0, c=1):
         end = b
     if end > 10**10:
         end = 100
-    ret = range(start, end, step)
+    ret = default_function.get_default_function("range")(start, end, step)
     return ret
 
 
@@ -99,4 +102,4 @@ def wrap_open(path, mode='r', *args):
     if path[0] == "%":
         raise Exception("preload control is blocked.")
 
-    return open(path, mode, *args)
+    return default_function.get_default_function("open")(path, mode, *args)
