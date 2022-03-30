@@ -2,6 +2,7 @@ import pathlib
 
 from .. import block
 from . import config
+from .. import context
 
 override_table = {}
 
@@ -66,7 +67,7 @@ def wrap_iter(objects, sentinel=None):
 @override
 def wrap_print(*objects, sep=' ', end='\n', file=None, flush=False):
     print(*objects, sep=sep, end=end,
-          file=file, flush=False)
+          file=context.stdout, flush=False)
 
 
 @override
