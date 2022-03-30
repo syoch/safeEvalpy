@@ -3,6 +3,7 @@ from .. import block
 import builtins
 from .overrides import override_table
 from .patcher import patcher
+from . import default_function
 
 
 @patcher.apply
@@ -17,6 +18,8 @@ def apply():
         table[name] = getattr(builtins, name)
         func = override_table[name]
         setattr(builtins, name, func)
+
+    default_function.backup_default_functions(table)
 
     return table
 
