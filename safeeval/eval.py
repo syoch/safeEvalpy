@@ -45,3 +45,11 @@ def _eval(
         pass
 
     return ret, stdout
+
+
+def _eval_as_str(src: str, __globals={}, __locals={}) -> Tuple[Any, str]:
+    ret, stdout = _eval(src, __globals, __locals)
+    with switcher.patcher:
+        ret = str(ret)
+
+    return ret, stdout
