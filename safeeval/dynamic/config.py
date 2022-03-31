@@ -58,4 +58,5 @@ module_block = {
     "dotenv": [...],
     "builtins": [...],
     "pickle": [...],
+    "_pickle": [...],
 }
