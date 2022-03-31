@@ -14,7 +14,7 @@ from . import context
 
 @timeout_decorator.timeout(5)
 def _eval(
-    src: str, __globals={}, __locals={}
+    src: str, as_str=True, __globals={}, __locals={}
 ) -> Tuple[Any, str]:
     context.stdout = io.StringIO()
 
@@ -44,11 +44,6 @@ def _eval(
     except Exception:
         pass
 
-    return ret, stdout
-
-
-def _eval_as_str(src: str, __globals={}, __locals={}) -> Tuple[Any, str]:
-    ret, stdout = _eval(src, __globals, __locals)
     with switcher.patcher:
         ret = str(ret)
 
