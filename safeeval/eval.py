@@ -44,7 +44,8 @@ def _eval(
     except Exception:
         pass
 
-    with switcher.patcher:
-        ret = str(ret)
+    if as_str:
+        with switcher.patcher:
+            ret = str(ret)
 
     return ret, stdout
